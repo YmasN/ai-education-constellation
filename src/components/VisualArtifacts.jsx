@@ -7,7 +7,7 @@ export default function VisualArtifact({ nodeId, className = "w-full h-full" }) 
       return (
         <svg viewBox="0 0 100 100" className={className} fill="none">
           <rect width="100" height="100" fill="#2D1B16" />
-          <path d="M20 80 L50 20 L80 80 Z" stroke="#C25E3E" strokeWidth="2.5" />
+          <path d="M20 80 L50 20 L80 80 Z" stroke="#A51C30" strokeWidth="2.5" />
           <path d="M50 20 L75 80" stroke="#E07A5F" strokeWidth="1.2" strokeDasharray="2 3" />
           <circle cx="50" cy="55" r="18" stroke="#F4F1DE" strokeWidth="1" strokeDasharray="3 2" />
           <line x1="10" y1="50" x2="50" y2="50" stroke="#F4F1DE" strokeWidth="1.5" />

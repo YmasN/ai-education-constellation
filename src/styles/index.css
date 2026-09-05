@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    background-color: #FBF9F5;
+    background-color: #FAF9F6;
     color: #1B1917;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
@@ -16,7 +16,7 @@
 
 /* Subtle paper texture overlay */
 .paper-pattern {
-  background-color: #FBF9F5;
+  background-color: #FAF9F6;
   background-image: radial-gradient(rgba(120, 113, 108, 0.08) 1px, transparent 0);
   background-size: 28px 28px;
 }
@@ -33,12 +33,12 @@
   animation: dash 35s linear infinite;
 }
 
-/* Smooth glass effect with warm tint */
+/* Smooth glass effect with crisp off-white tone */
 .glass-panel {
-  background: rgba(253, 252, 249, 0.88);
+  background: rgba(250, 249, 246, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(223, 210, 188, 0.6);
+  border: 1px solid rgba(213, 210, 201, 0.6);
 }
 
 /* Custom minimal scrollbar */
@@ -46,12 +46,12 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F4EFE6;
+  background: #F3F2EE;
 }
 ::-webkit-scrollbar-thumb {
-  background: #DFD2BC;
+  background: #D5D2C9;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B8860B;
+  background: #A51C30;
 }

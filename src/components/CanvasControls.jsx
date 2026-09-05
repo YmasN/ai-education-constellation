@@ -30,7 +30,7 @@ export default function CanvasControls({
           <div className="w-2.5 h-2.5 rounded-full bg-terracotta animate-pulse" />
           <div>
             <h1 className="font-editorial text-base sm:text-lg font-bold text-ink leading-tight">
-              Keep thinking.
+              Let's keep thinking.
             </h1>
             <p className="text-[10px] text-ink-muted hidden sm:block font-sans">
               Cultivating Natural Intelligence Across Education, Science & Living
@@ -103,7 +103,7 @@ export default function CanvasControls({
 
       </div>
 
-      {/* Bottom Left: Anthropic-style Callout */}
+      {/* Bottom Left: Info Callout */}
       <div className={`fixed bottom-6 left-6 z-30 pointer-events-none hidden sm:block transition-opacity duration-500 ${isCinemaMode ? 'opacity-0' : 'opacity-100'}`}>
         <div className="glass-panel px-3.5 py-2 rounded-xl border border-vellum-400/80 pointer-events-auto text-xs text-ink-muted shadow-sm flex items-center gap-2">
           <Info className="w-3.5 h-3.5 text-terracotta" />

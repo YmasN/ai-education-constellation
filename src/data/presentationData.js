@@ -14,8 +14,8 @@ export const presentationData = {
       question: "What is natural intelligence in an automated era?",
       category: "The Human Center",
       thesis: "AI does not replace human intellect — it is a cognitive bicycle for natural human curiosity.",
-      color: "#C25E3E", // Terracotta
-      accentGlow: "rgba(194, 94, 62, 0.18)",
+      color: "#A51C30", // Crimson Red
+      accentGlow: "rgba(165, 28, 48, 0.20)",
       x: 0,
       y: -50
     },
@@ -24,8 +24,8 @@ export const presentationData = {
       question: "How should we teach?",
       category: "Teaching & Pedagogy",
       thesis: "Moving past the adversarial detection trap to reclaim authentic 1-on-1 student mentorship.",
-      color: "#C25E3E",
-      accentGlow: "rgba(194, 94, 62, 0.18)",
+      color: "#A51C30",
+      accentGlow: "rgba(165, 28, 48, 0.20)",
       x: -500,
       y: -330
     },

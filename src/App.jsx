@@ -104,8 +104,8 @@ export default function App() {
   const handleResetZoom = () => {
     setCamera({
       x: 0,
-      y: 80,
-      zoom: 0.58
+      y: 0,
+      zoom: 0.45
     });
   };
 
@@ -198,6 +198,11 @@ export default function App() {
           setCurrentStepIndex(1);
           setIsExploreMode(false);
         }}
+        onRestartKeynote={() => {
+          setCurrentStepIndex(0);
+          setIsExploreMode(false);
+        }}
+        onExploreMode={() => setIsExploreMode(true)}
       />
 
       {/* Keynote Navigation HUD (Visible in Guided Mode) */}

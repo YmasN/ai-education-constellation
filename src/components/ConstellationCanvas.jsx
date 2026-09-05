@@ -199,12 +199,12 @@ export default function ConstellationCanvas({
       {/* Floating Stardust Particles */}
       <div className="absolute inset-0 pointer-events-none opacity-50 z-0">
         <svg className="w-full h-full">
-          <circle cx="12%" cy="18%" r="1.5" fill="#C25E3E" opacity="0.6" className="animate-pulse" />
+          <circle cx="12%" cy="18%" r="1.5" fill="#A51C30" opacity="0.6" className="animate-pulse" />
           <circle cx="28%" cy="75%" r="2.0" fill="#4A6B53" opacity="0.5" />
           <circle cx="82%" cy="22%" r="1.5" fill="#2C3E6B" opacity="0.6" className="animate-pulse" />
           <circle cx="75%" cy="80%" r="2.2" fill="#B8860B" opacity="0.6" />
           <circle cx="48%" cy="15%" r="1.2" fill="#1B1917" opacity="0.4" />
-          <circle cx="52%" cy="88%" r="1.8" fill="#C25E3E" opacity="0.5" className="animate-pulse" />
+          <circle cx="52%" cy="88%" r="1.8" fill="#A51C30" opacity="0.5" className="animate-pulse" />
         </svg>
       </div>
 
@@ -288,7 +288,7 @@ export default function ConstellationCanvas({
                 transform: 'translate(-50%, -50%)',
                 width: '680px',
                 height: '680px',
-                background: `radial-gradient(circle, ${currentActiveHub.accentGlow} 0%, rgba(251,249,245,0) 70%)`
+                background: `radial-gradient(circle, ${currentActiveHub.accentGlow} 0%, rgba(250,249,246,0) 70%)`
               }}
             />
           )}
