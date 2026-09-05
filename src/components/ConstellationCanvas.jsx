@@ -299,11 +299,11 @@ export default function ConstellationCanvas({
             style={{ left: 0, top: 0 }}
           >
             {/* Inter-hub structural web lines */}
-            <path d="M 0 -50 L -500 -330" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -50 L 500 -330" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -50 L -520 310" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -50 L 520 310" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -50 L 0 580" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -40 L -390 -260" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -40 L 390 -260" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -40 L -400 250" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -40 L 400 250" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -40 L 0 460" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
 
             {/* Bezier Spoke Lines to Satellite Nodes */}
             {data.nodes.map((node) => {

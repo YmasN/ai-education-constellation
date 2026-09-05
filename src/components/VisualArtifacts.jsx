@@ -44,6 +44,25 @@ export default function VisualArtifact({ nodeId, className = "w-full h-full" }) 
         </svg>
       );
 
+    // Institutional Data Sovereignty: Cryptographic Citadel & Shield
+    case 'node-data-sovereignty':
+      return (
+        <svg viewBox="0 0 100 100" className={className} fill="none">
+          <rect width="100" height="100" fill="#181518" />
+          {/* Shield / Citadel Arch */}
+          <path d="M50 16 L78 28 V52 C78 70 50 84 50 84 C50 84 22 70 22 52 V28 Z" stroke="#A51C30" strokeWidth="2.2" fill="#A51C30" fillOpacity="0.15" />
+          <path d="M50 24 L70 34 V52 C70 64 50 75 50 75 C50 75 30 64 30 52 V34 Z" stroke="#D4AF37" strokeWidth="1" strokeDasharray="3 2" />
+          {/* Central Keyhole / Vault Core */}
+          <circle cx="50" cy="46" r="8" stroke="#FAF9F6" strokeWidth="1.5" />
+          <path d="M47 52 L45 62 H55 L53 52 Z" fill="#FAF9F6" />
+          <circle cx="50" cy="46" r="3" fill="#A51C30" />
+          {/* Defensive Geometric Rays */}
+          <line x1="50" y1="6" x2="50" y2="12" stroke="#FAF9F6" strokeWidth="1.5" />
+          <line x1="16" y1="26" x2="20" y2="28" stroke="#FAF9F6" strokeWidth="1.2" />
+          <line x1="84" y1="26" x2="80" y2="28" stroke="#FAF9F6" strokeWidth="1.2" />
+        </svg>
+      );
+
     // 4. Socratic Partner: Golden Spiral & Luminous Nautilus
     case 'node-socratic-mentor':
       return (
