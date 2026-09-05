@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { iconMap, HelpCircle, X, Copy, Check, Quote, AlertTriangle, Lightbulb, BookOpen } from './Icons';
+import { HelpCircle, X, Copy, Check, Quote, AlertTriangle, Lightbulb, BookOpen } from './Icons';
+import VisualArtifact from './VisualArtifacts';
 
 export default function NodeDetailDrawer({ node, onClose }) {
   const [copied, setCopied] = useState(false);
   if (!node) return null;
-
-  const IconComponent = iconMap[node.icon] || HelpCircle;
 
   const handleCopyPrompt = () => {
     navigator.clipboard.writeText(node.facultyAction);
@@ -18,35 +17,41 @@ export default function NodeDetailDrawer({ node, onClose }) {
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-ink/20 backdrop-blur-xs transition-opacity pointer-events-auto"
+        className="fixed inset-0 bg-ink/25 backdrop-blur-xs transition-opacity pointer-events-auto"
       />
 
       {/* Slide-Over Drawer */}
       <div className="relative w-full max-w-xl h-full bg-vellum-100/98 shadow-2xl border-l border-vellum-400/90 pointer-events-auto flex flex-col overflow-hidden animate-in slide-in-from-right duration-300">
         
-        {/* Drawer Header */}
-        <div className="p-6 border-b border-vellum-300 flex items-start justify-between bg-vellum-50/70">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-ink text-vellum-100 flex items-center justify-center shadow-sm">
-              <IconComponent className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="text-[11px] uppercase tracking-wider font-semibold px-2.5 py-0.5 rounded-full bg-vellum-200 text-ink-muted">
-                {node.tag}
-              </span>
-              <h2 className="font-editorial text-2xl font-bold text-ink mt-1">
-                {node.title}
-              </h2>
-            </div>
+        {/* Visual Header Showcase Banner */}
+        <div className="relative h-44 w-full bg-ink overflow-hidden shrink-0 border-b border-vellum-400 flex items-center justify-center">
+          <div className="w-full h-full opacity-70">
+            <VisualArtifact nodeId={node.id} className="w-full h-full object-cover" />
           </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-vellum-100/98 via-transparent to-black/30 pointer-events-none" />
 
+          {/* Close Button on Top-Right */}
           <button
             onClick={onClose}
-            className="p-2 rounded-lg text-ink-muted hover:text-ink hover:bg-vellum-300/80 transition-colors"
+            className="absolute top-4 right-4 p-2 rounded-full bg-vellum-50/80 backdrop-blur-md text-ink hover:bg-vellum-50 shadow-md transition-colors pointer-events-auto"
             title="Close Drawer (Esc)"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
+
+          {/* Floating Category Pill */}
+          <div className="absolute bottom-4 left-6">
+            <span className="text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full bg-vellum-50 text-ink shadow-sm border border-vellum-300">
+              {node.tag}
+            </span>
+          </div>
+        </div>
+
+        {/* Drawer Body Header */}
+        <div className="px-6 pt-4 pb-3 border-b border-vellum-300/80 bg-vellum-50/60">
+          <h2 className="font-editorial text-2xl sm:text-3xl font-bold text-ink leading-tight">
+            {node.title}
+          </h2>
         </div>
 
         {/* Drawer Body Scrollable */}

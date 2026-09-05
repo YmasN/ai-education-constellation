@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight, Clock, BookOpen, Maximize, Compass } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock, BookOpen, Maximize, Film } from 'lucide-react';
 
 export default function KeynoteHUD({
   activeStop,
@@ -7,14 +7,14 @@ export default function KeynoteHUD({
   totalStops,
   elapsedSeconds,
   isTimerRunning,
+  isCinemaMode,
   showPresenterNotes,
   onPrev,
   onNext,
   onToggleNotes,
   onToggleFullscreen,
-  onToggleMode
+  onToggleCinema
 }) {
-  // Format MM:SS
   const formatTime = (totalSec) => {
     const mins = Math.floor(totalSec / 60);
     const secs = totalSec % 60;
@@ -24,8 +24,8 @@ export default function KeynoteHUD({
   const progressPercent = ((currentIndex + 1) / totalStops) * 100;
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-full max-w-4xl px-4 pointer-events-none">
-      <div className="glass-panel shadow-2xl rounded-2xl p-3.5 border border-vellum-400/80 pointer-events-auto flex items-center justify-between gap-4">
+    <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-full max-w-4xl px-4 pointer-events-none transition-all duration-500 ${isCinemaMode ? 'translate-y-2 opacity-90 hover:opacity-100' : 'opacity-100'}`}>
+      <div className="glass-panel shadow-2xl rounded-2xl p-3.5 border border-vellum-400/90 pointer-events-auto flex items-center justify-between gap-4">
         
         {/* Step Indicator & Title */}
         <div className="flex items-center gap-3.5 min-w-0">
@@ -92,6 +92,15 @@ export default function KeynoteHUD({
             <Maximize className="w-4 h-4" />
           </button>
 
+          {/* Cinema Projection Toggle */}
+          <button
+            onClick={onToggleCinema}
+            className={`p-2 rounded-lg transition-colors hidden sm:block ${isCinemaMode ? 'bg-terracotta text-white' : 'bg-vellum-200/80 text-ink hover:bg-vellum-300'}`}
+            title="Toggle Cinema Mode (C)"
+          >
+            <Film className="w-4 h-4" />
+          </button>
+
           {/* Prev / Next Navigation */}
           <div className="flex items-center gap-1 ml-1 border-l border-vellum-300 pl-2">
             <button
@@ -115,12 +124,14 @@ export default function KeynoteHUD({
 
       </div>
 
-      {/* Discreet Hotkey Legend below */}
-      <div className="mt-2 text-center">
-        <span className="text-[11px] text-ink-muted/80 bg-vellum-100/70 backdrop-blur-sm px-3 py-1 rounded-full border border-vellum-300/40 font-mono">
-          <kbd className="font-semibold">Space</kbd> / <kbd className="font-semibold">→</kbd> Next · <kbd className="font-semibold">←</kbd> Prev · <kbd className="font-semibold">T</kbd> Notes · <kbd className="font-semibold">M</kbd> Free Explore
-        </span>
-      </div>
+      {/* Hotkey Legend */}
+      {!isCinemaMode && (
+        <div className="mt-2 text-center">
+          <span className="text-[11px] text-ink-muted/80 bg-vellum-100/70 backdrop-blur-sm px-3 py-1 rounded-full border border-vellum-300/40 font-mono">
+            <kbd className="font-semibold">Space</kbd> / <kbd className="font-semibold">→</kbd> Next · <kbd className="font-semibold">←</kbd> Prev · <kbd className="font-semibold">T</kbd> Notes · <kbd className="font-semibold">C</kbd> Cinema · <kbd className="font-semibold">M</kbd> Free Explore
+          </span>
+        </div>
+      )}
     </div>
   );
 }

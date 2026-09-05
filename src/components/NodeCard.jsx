@@ -1,42 +1,57 @@
 import React from 'react';
-import { iconMap, HelpCircle } from './Icons';
+import VisualArtifact from './VisualArtifacts';
+import { soundEngine } from '../utils/soundEngine';
 
 export default function NodeCard({ node, isHighlighted, onClick }) {
-  const IconComponent = iconMap[node.icon] || HelpCircle;
+  const handleClick = () => {
+    soundEngine.playNodeChime();
+    onClick(node);
+  };
 
   return (
     <div
-      onClick={() => onClick(node)}
+      onClick={handleClick}
       style={{
         left: `${node.x}px`,
         top: `${node.y}px`,
         transform: 'translate(-50%, -50%)',
       }}
-      className={`absolute cursor-pointer transition-all duration-300 group z-20 select-none
-        ${isHighlighted ? 'scale-105 ring-2 ring-ink ring-offset-2 ring-offset-vellum-100 shadow-xl' : 'hover:scale-102 shadow-md hover:shadow-lg'}
+      className={`absolute cursor-pointer transition-all duration-500 group z-20 select-none
+        ${isHighlighted ? 'scale-110 z-30' : 'hover:scale-105 hover:z-30'}
       `}
     >
-      <div className="w-56 bg-vellum-50/95 backdrop-blur-sm rounded-lg border border-vellum-400/80 p-3.5 transition-colors group-hover:border-ink/60 group-hover:bg-vellum-50">
-        <div className="flex items-center justify-between mb-2">
-          <div className="w-7 h-7 rounded-md bg-vellum-200/90 flex items-center justify-center text-ink group-hover:bg-ink group-hover:text-vellum-100 transition-colors">
-            <IconComponent className="w-4 h-4" />
-          </div>
-          <span className="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full bg-vellum-200 text-ink-muted">
-            {node.tag}
-          </span>
+      <div className="flex flex-col items-center w-48 text-center transition-all duration-300">
+        {/* Artistic Thumbnail Frame (Anthropic Style) */}
+        <div className={`relative w-20 h-20 rounded-xl overflow-hidden shadow-md border-2 transition-all duration-500 bg-vellum-50
+          ${isHighlighted 
+            ? 'ring-4 ring-ink/20 border-ink shadow-2xl scale-105' 
+            : 'border-vellum-400 group-hover:border-ink group-hover:shadow-xl'
+          }
+        `}>
+          <VisualArtifact nodeId={node.id} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+          
+          {/* Subtle vignette gloss */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+          
+          {/* Active pulse glow */}
+          {isHighlighted && (
+            <div className="absolute inset-0 ring-2 ring-inset ring-vellum-100/50 animate-pulse pointer-events-none" />
+          )}
         </div>
 
-        <h4 className="font-editorial text-base font-semibold text-ink leading-tight mb-1 group-hover:text-terracotta transition-colors">
-          {node.title}
-        </h4>
+        {/* Floating Label & Badge */}
+        <div className="mt-2 flex flex-col items-center">
+          <span className="text-[9px] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full bg-vellum-200/90 text-ink-muted group-hover:bg-ink group-hover:text-vellum-100 transition-colors">
+            {node.tag}
+          </span>
+          <h4 className="font-editorial text-sm font-semibold text-ink leading-tight mt-1 group-hover:text-terracotta transition-colors line-clamp-1 max-w-full">
+            {node.title}
+          </h4>
+        </div>
 
-        <p className="text-xs text-ink-muted line-clamp-2 leading-relaxed font-sans">
-          {node.summary}
-        </p>
-
-        <div className="mt-2.5 pt-2 border-t border-vellum-300/60 flex items-center justify-between text-[11px] text-ink-muted group-hover:text-ink">
-          <span>Read case study</span>
-          <span className="font-mono transition-transform group-hover:translate-x-1">→</span>
+        {/* Hover quick preview pill */}
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -bottom-10 bg-vellum-50/95 backdrop-blur-md px-3 py-1 rounded-full border border-vellum-400/80 shadow-lg text-[10px] text-ink whitespace-nowrap pointer-events-none z-40">
+          Click to read deep dive →
         </div>
       </div>
     </div>

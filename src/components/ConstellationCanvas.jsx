@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import NodeCard from './NodeCard';
+import { soundEngine } from '../utils/soundEngine';
 
 export default function ConstellationCanvas({
   data,
@@ -16,15 +17,28 @@ export default function ConstellationCanvas({
   const [camState, setCamState] = useState({
     x: camera.x,
     y: camera.y,
-    zoom: camera.zoom
+    zoom: camera.zoom,
+    tiltX: 0,
+    tiltY: 0
   });
 
   const isDraggingRef = useRef(false);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const camStartRef = useRef({ x: 0, y: 0 });
   const animFrameRef = useRef(null);
+  const prevCameraRef = useRef(camera);
 
-  // Smooth lerp towards target camera
+  // Play cinematic swoop when camera changes significantly in Keynote mode
+  useEffect(() => {
+    const prev = prevCameraRef.current;
+    const dist = Math.hypot(camera.x - prev.x, camera.y - prev.y);
+    if (dist > 150) {
+      soundEngine.playCameraSwoop();
+    }
+    prevCameraRef.current = camera;
+  }, [camera.x, camera.y]);
+
+  // Smooth lerp towards target camera with subtle 3D cinematic tilt
   useEffect(() => {
     let currentX = camState.x;
     let currentY = camState.y;
@@ -35,17 +49,32 @@ export default function ConstellationCanvas({
       const dy = camera.y - currentY;
       const dz = camera.zoom - currentZoom;
 
-      // When difference is small, snap to target
+      // Calculate subtle dynamic camera tilt based on velocity
+      const targetTiltX = Math.max(Math.min(-dy * 0.008, 4), -4);
+      const targetTiltY = Math.max(Math.min(dx * 0.008, 5), -5);
+
       if (Math.abs(dx) < 0.2 && Math.abs(dy) < 0.2 && Math.abs(dz) < 0.001) {
         currentX = camera.x;
         currentY = camera.y;
         currentZoom = camera.zoom;
-        setCamState({ x: currentX, y: currentY, zoom: currentZoom });
+        setCamState({
+          x: currentX,
+          y: currentY,
+          zoom: currentZoom,
+          tiltX: 0,
+          tiltY: 0
+        });
       } else {
-        currentX += dx * 0.09;
-        currentY += dy * 0.09;
-        currentZoom += dz * 0.09;
-        setCamState({ x: currentX, y: currentY, zoom: currentZoom });
+        currentX += dx * 0.085;
+        currentY += dy * 0.085;
+        currentZoom += dz * 0.085;
+        setCamState(prev => ({
+          x: currentX,
+          y: currentY,
+          zoom: currentZoom,
+          tiltX: prev.tiltX + (targetTiltX - prev.tiltX) * 0.1,
+          tiltY: prev.tiltY + (targetTiltY - prev.tiltY) * 0.1
+        }));
         animFrameRef.current = requestAnimationFrame(animate);
       }
     };
@@ -59,7 +88,6 @@ export default function ConstellationCanvas({
 
   // Mouse Drag to Pan
   const handleMouseDown = (e) => {
-    // Only allow pan on canvas background
     if (e.target.closest('.group') || e.target.closest('button')) return;
     isDraggingRef.current = true;
     dragStartRef.current = { x: e.clientX, y: e.clientY };
@@ -92,22 +120,18 @@ export default function ConstellationCanvas({
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
-      // Mouse offset relative to viewport center
       const screenX = e.clientX - centerX;
       const screenY = e.clientY - centerY;
 
       const currentZoom = camera.zoom;
-      // Smooth geometric zoom step
       const zoomFactor = e.deltaY > 0 ? 0.90 : 1.11;
       const newZoom = Math.min(Math.max(currentZoom * zoomFactor, 0.35), 3.0);
 
       if (Math.abs(newZoom - currentZoom) < 0.0001) return;
 
-      // Calculate world coordinates currently directly under the mouse pointer
       const worldX = camera.x + screenX / currentZoom;
       const worldY = camera.y + screenY / currentZoom;
 
-      // Recalculate camera position so the world point remains stationary under cursor
       const newCamX = worldX - screenX / newZoom;
       const newCamY = worldY - screenY / newZoom;
 
@@ -122,7 +146,7 @@ export default function ConstellationCanvas({
     return () => container.removeEventListener('wheel', onWheel);
   }, [camera.x, camera.y, camera.zoom, onManualPanZoom]);
 
-  // Touch Support for mobile/tablets
+  // Touch Support
   const touchStartRef = useRef({ x: 0, y: 0 });
   const handleTouchStart = (e) => {
     if (e.touches.length === 1) {
@@ -147,6 +171,9 @@ export default function ConstellationCanvas({
     isDraggingRef.current = false;
   };
 
+  // Find currently active hub for volumetric lighting
+  const currentActiveHub = data.hubs.find(h => h.id === activeStop?.hubId) || data.hubs[0];
+
   return (
     <div
       ref={containerRef}
@@ -156,77 +183,86 @@ export default function ConstellationCanvas({
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      style={{ perspective: '1200px' }}
       className="relative w-full h-full overflow-hidden paper-pattern cursor-grab active:cursor-grabbing select-none"
     >
-      {/* Background Ambient Particles */}
-      <div className="absolute inset-0 pointer-events-none opacity-40">
+      {/* Cinematic Vignette Shadow Overlay */}
+      <div className="absolute inset-0 pointer-events-none z-30 shadow-[inset_0_0_120px_rgba(27,25,23,0.15)]" />
+
+      {/* Floating Stardust Particles (3 Parallax Layers) */}
+      <div className="absolute inset-0 pointer-events-none opacity-50 z-0">
         <svg className="w-full h-full">
-          <circle cx="15%" cy="20%" r="2.5" fill="#C25E3E" opacity="0.3" className="animate-pulse" />
-          <circle cx="85%" cy="15%" r="3" fill="#4A6B53" opacity="0.3" className="animate-pulse" />
-          <circle cx="10%" cy="80%" r="2" fill="#2C3E6B" opacity="0.3" />
-          <circle cx="90%" cy="75%" r="2.5" fill="#B8860B" opacity="0.3" className="animate-pulse" />
-          <circle cx="50%" cy="10%" r="1.5" fill="#1B1917" opacity="0.2" />
-          <circle cx="48%" cy="92%" r="2" fill="#C25E3E" opacity="0.3" />
+          <circle cx="12%" cy="18%" r="1.5" fill="#C25E3E" opacity="0.6" className="animate-pulse" />
+          <circle cx="28%" cy="75%" r="2.0" fill="#4A6B53" opacity="0.5" />
+          <circle cx="82%" cy="22%" r="1.5" fill="#2C3E6B" opacity="0.6" className="animate-pulse" />
+          <circle cx="75%" cy="80%" r="2.2" fill="#B8860B" opacity="0.6" />
+          <circle cx="48%" cy="15%" r="1.2" fill="#1B1917" opacity="0.4" />
+          <circle cx="52%" cy="88%" r="1.8" fill="#C25E3E" opacity="0.5" className="animate-pulse" />
+          <circle cx="92%" cy="48%" r="1.5" fill="#8B5E3C" opacity="0.4" />
+          <circle cx="8%" cy="52%" r="1.5" fill="#2C3E6B" opacity="0.5" />
         </svg>
       </div>
 
-      {/* Transform Container */}
+      {/* Transform Container with 3D Cinematic Camera */}
       <div
-        className="absolute w-0 h-0 will-change-transform"
+        className="absolute w-0 h-0 will-change-transform transition-transform"
         style={{
           left: '50%',
           top: '50%',
-          transform: `translate3d(${-camState.x * camState.zoom}px, ${-camState.y * camState.zoom}px, 0) scale(${camState.zoom})`,
+          transform: `translate3d(${-camState.x * camState.zoom}px, ${-camState.y * camState.zoom}px, 0) scale(${camState.zoom}) rotateX(${camState.tiltX}deg) rotateY(${camState.tiltY}deg)`,
           transformOrigin: '0 0'
         }}
       >
-        {/* Giant Editorial Bookend Typography (Anthropic Aesthetic) */}
+        {/* Volumetric Glowing Aura Behind Active Hub */}
+        {currentActiveHub && (
+          <div
+            className="absolute rounded-full pointer-events-none blur-3xl transition-all duration-1000 ease-out z-0"
+            style={{
+              left: `${currentActiveHub.x}px`,
+              top: `${currentActiveHub.y}px`,
+              transform: 'translate(-50%, -50%)',
+              width: '650px',
+              height: '650px',
+              background: `radial-gradient(circle, ${currentActiveHub.accentGlow} 0%, rgba(251,249,245,0) 70%)`
+            }}
+          />
+        )}
+
+        {/* Colossal Bookend Editorial Typography (Anthropic "Keep thinking." Signature) */}
         <div
-          className="absolute font-editorial text-[160px] font-light text-ink/10 select-none pointer-events-none tracking-tighter"
-          style={{ left: '-1350px', top: '-850px' }}
+          className="absolute font-editorial text-[180px] font-normal text-ink/12 select-none pointer-events-none tracking-tighter"
+          style={{ left: '-1380px', top: '-860px' }}
         >
           Keep
         </div>
         <div
-          className="absolute font-editorial text-[170px] font-light text-ink/10 select-none pointer-events-none tracking-tighter"
-          style={{ left: '720px', top: '780px' }}
+          className="absolute font-editorial text-[200px] font-normal text-ink/12 select-none pointer-events-none tracking-tighter"
+          style={{ left: '680px', top: '820px' }}
         >
           thinking.
         </div>
 
-        {/* SVG Connector Web */}
+        {/* SVG Dynamic Connective Constellation Web */}
         <svg
-          className="absolute overflow-visible pointer-events-none"
+          className="absolute overflow-visible pointer-events-none z-10"
           style={{ left: 0, top: 0 }}
         >
-          <defs>
-            <linearGradient id="grad-warm" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#C25E3E" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#4A6B53" stopOpacity="0.2" />
-            </linearGradient>
-            <linearGradient id="grad-cool" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#2C3E6B" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#B8860B" stopOpacity="0.2" />
-            </linearGradient>
-          </defs>
+          {/* Subtle inter-hub cosmic chords */}
+          <path d="M 0 -60 L -640 -420" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+          <path d="M 0 -60 L 640 -420" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+          <path d="M 0 -60 L -660 400" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+          <path d="M 0 -60 L 660 400" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+          <path d="M 0 -60 L 0 740" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+          <path d="M -640 -420 L 640 -420" stroke="rgba(120, 113, 108, 0.12)" strokeWidth="1" strokeDasharray="2 6" fill="none" />
+          <path d="M -660 400 L 660 400" stroke="rgba(120, 113, 108, 0.12)" strokeWidth="1" strokeDasharray="2 6" fill="none" />
 
-          {/* Inter-hub structural web lines */}
-          <path d="M 0 -60 L -620 -420" stroke="rgba(120, 113, 108, 0.25)" strokeWidth="1.5" strokeDasharray="3 4" fill="none" />
-          <path d="M 0 -60 L 620 -420" stroke="rgba(120, 113, 108, 0.25)" strokeWidth="1.5" strokeDasharray="3 4" fill="none" />
-          <path d="M 0 -60 L -650 380" stroke="rgba(120, 113, 108, 0.25)" strokeWidth="1.5" strokeDasharray="3 4" fill="none" />
-          <path d="M 0 -60 L 650 380" stroke="rgba(120, 113, 108, 0.25)" strokeWidth="1.5" strokeDasharray="3 4" fill="none" />
-          <path d="M 0 -60 L 0 720" stroke="rgba(120, 113, 108, 0.25)" strokeWidth="1.5" strokeDasharray="3 4" fill="none" />
-          <path d="M -620 -420 L 620 -420" stroke="rgba(120, 113, 108, 0.15)" strokeWidth="1" strokeDasharray="2 4" fill="none" />
-          <path d="M -650 380 L 650 380" stroke="rgba(120, 113, 108, 0.15)" strokeWidth="1" strokeDasharray="2 4" fill="none" />
-
-          {/* Hub to Satellite Nodes Connecting Curves */}
+          {/* Organic Bezier Spoke Lines Radiating to Satellite Nodes */}
           {data.nodes.map((node) => {
             const hub = data.hubs.find((h) => h.id === node.hubId);
             if (!hub) return null;
             
-            // Calculate bezier control points for organic curvature
             const midX = (hub.x + node.x) / 2;
-            const midY = (hub.y + node.y) / 2 - 20;
+            const midY = (hub.y + node.y) / 2 - 15;
 
             const isCurrentStopNode = activeStop?.activeNodeIds?.includes(node.id);
 
@@ -234,18 +270,18 @@ export default function ConstellationCanvas({
               <g key={`path-${node.id}`}>
                 <path
                   d={`M ${hub.x} ${hub.y} Q ${midX} ${midY} ${node.x} ${node.y}`}
-                  stroke={isCurrentStopNode ? hub.color : 'rgba(120, 113, 108, 0.3)'}
+                  stroke={isCurrentStopNode ? hub.color : 'rgba(120, 113, 108, 0.25)'}
                   strokeWidth={isCurrentStopNode ? '2' : '1.2'}
                   className={isCurrentStopNode ? 'pulse-line' : ''}
                   fill="none"
                 />
-                <circle cx={node.x} cy={node.y} r="3" fill={hub.color} opacity="0.6" />
+                <circle cx={node.x} cy={node.y} r="3" fill={hub.color} opacity={isCurrentStopNode ? 0.9 : 0.4} />
               </g>
             );
           })}
         </svg>
 
-        {/* Central & Thematic Hubs */}
+        {/* Central & Thematic Inquiries (Anthropic Question Aesthetic) */}
         {data.hubs.map((hub) => {
           const isActiveHub = activeStop?.hubId === hub.id;
           return (
@@ -257,33 +293,23 @@ export default function ConstellationCanvas({
                 top: `${hub.y}px`,
                 transform: 'translate(-50%, -50%)',
               }}
-              className={`absolute cursor-pointer text-center select-none transition-all duration-500 z-10
-                ${isActiveHub ? 'opacity-100 scale-105' : 'opacity-85 hover:opacity-100 hover:scale-102'}
+              className={`absolute cursor-pointer text-center select-none transition-all duration-700 z-15
+                ${isActiveHub ? 'scale-105 opacity-100' : 'opacity-70 hover:opacity-100 hover:scale-102'}
               `}
             >
-              <div className="relative inline-flex flex-col items-center max-w-sm">
-                {/* Glow ring */}
-                <div
-                  className="w-24 h-24 rounded-full flex items-center justify-center mb-3 transition-transform duration-500 shadow-md"
-                  style={{
-                    backgroundColor: hub.accentBg,
-                    border: `1.5px solid ${hub.color}`,
-                  }}
-                >
-                  <div
-                    className="w-4 h-4 rounded-full animate-ping opacity-40"
-                    style={{ backgroundColor: hub.color }}
-                  />
-                  <div
-                    className="w-3 h-3 rounded-full absolute"
-                    style={{ backgroundColor: hub.color }}
-                  />
-                </div>
+              <div className="max-w-md px-4">
+                {/* Category eyebrow */}
+                <span className="text-[10px] uppercase font-mono tracking-widest font-semibold text-ink-muted">
+                  {hub.category}
+                </span>
 
-                <h3 className="font-editorial text-2xl font-semibold text-ink tracking-tight hover:text-terracotta transition-colors">
-                  {hub.title}
+                {/* Question Heading (Serif) */}
+                <h3 className="font-editorial text-2xl sm:text-3xl font-medium text-ink tracking-tight mt-1 leading-snug hover:text-terracotta transition-colors">
+                  {hub.question}
                 </h3>
-                <p className="text-xs text-ink-muted mt-1 leading-relaxed font-sans px-4">
+
+                {/* Contemplative subtext */}
+                <p className="text-xs text-ink-muted mt-2 leading-relaxed font-sans max-w-sm mx-auto">
                   {hub.thesis}
                 </p>
               </div>
@@ -291,7 +317,7 @@ export default function ConstellationCanvas({
           );
         })}
 
-        {/* Satellite Node Cards */}
+        {/* Satellite Node Cards (Curated Micro-Art Gallery) */}
         {data.nodes.map((node) => {
           const isHighlighted = activeStop?.activeNodeIds?.includes(node.id);
           const isFaded = !isExploreMode && activeStop?.activeNodeIds?.length > 0 && !isHighlighted;
@@ -299,7 +325,7 @@ export default function ConstellationCanvas({
           return (
             <div
               key={node.id}
-              className={`transition-opacity duration-500 ${isFaded ? 'opacity-30' : 'opacity-100'}`}
+              className={`transition-all duration-500 ${isFaded ? 'opacity-25 filter blur-[0.6px]' : 'opacity-100'}`}
             >
               <NodeCard
                 node={node}

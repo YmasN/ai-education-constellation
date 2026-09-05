@@ -1,21 +1,31 @@
-import React from 'react';
-import { Plus, Minus, RotateCcw, Compass, Presentation, Info } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, Minus, RotateCcw, Compass, Presentation, Volume2, VolumeX, Info, Film } from 'lucide-react';
+import { soundEngine } from '../utils/soundEngine';
 
 export default function CanvasControls({
   isExploreMode,
+  isCinemaMode,
   onToggleMode,
+  onToggleCinema,
   onZoomIn,
   onZoomOut,
-  onResetZoom,
-  onOpenOverview
+  onResetZoom
 }) {
+  const [isAudioActive, setIsAudioActive] = useState(false);
+
+  const handleToggleAudio = () => {
+    const nextState = !isAudioActive;
+    const success = soundEngine.toggleAmbient(nextState);
+    setIsAudioActive(success ? nextState : false);
+  };
+
   return (
     <>
-      {/* Top Header & Mode Switcher */}
-      <div className="fixed top-5 left-6 right-6 z-30 flex items-center justify-between pointer-events-none">
+      {/* Top Header & Navigation Bar */}
+      <div className={`fixed top-5 left-6 right-6 z-30 flex items-center justify-between pointer-events-none transition-opacity duration-500 ${isCinemaMode ? 'opacity-0 hover:opacity-100' : 'opacity-100'}`}>
         
-        {/* Title & Author Branding */}
-        <div className="glass-panel px-4 py-2.5 rounded-2xl border border-vellum-400 pointer-events-auto flex items-center gap-3 shadow-md">
+        {/* Title & Exhibition Branding */}
+        <div className="glass-panel px-4 py-2.5 rounded-2xl border border-vellum-400/90 pointer-events-auto flex items-center gap-3 shadow-md">
           <div className="w-2.5 h-2.5 rounded-full bg-terracotta animate-pulse" />
           <div>
             <h1 className="font-editorial text-base sm:text-lg font-bold text-ink leading-tight">
@@ -27,44 +37,72 @@ export default function CanvasControls({
           </div>
         </div>
 
-        {/* Mode Switcher Pill */}
-        <div className="glass-panel p-1 rounded-2xl border border-vellum-400 pointer-events-auto shadow-md flex items-center gap-1">
+        {/* Center/Right Control Cluster */}
+        <div className="flex items-center gap-2 pointer-events-auto">
+          
+          {/* Ambient Soundscape Toggle */}
           <button
-            onClick={() => isExploreMode && onToggleMode()}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all
-              ${!isExploreMode ? 'bg-ink text-vellum-100 shadow-sm' : 'text-ink-muted hover:text-ink'}
+            onClick={handleToggleAudio}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-2xl glass-panel text-xs font-mono transition-all border border-vellum-400/80 shadow-md
+              ${isAudioActive ? 'bg-ink text-vellum-100' : 'text-ink-muted hover:text-ink'}
             `}
-            title="Guided Keynote Mode (Space / Arrow Keys to advance)"
+            title="Toggle Ethereal Ambient Atmosphere"
           >
-            <Presentation className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Guided Keynote</span>
+            {isAudioActive ? <Volume2 className="w-3.5 h-3.5 text-terracotta" /> : <VolumeX className="w-3.5 h-3.5" />}
+            <span className="hidden md:inline">{isAudioActive ? 'Ambient: On' : 'Ambient: Off'}</span>
           </button>
 
+          {/* Mode Switcher Pill */}
+          <div className="glass-panel p-1 rounded-2xl border border-vellum-400/90 shadow-md flex items-center gap-1">
+            <button
+              onClick={() => isExploreMode && onToggleMode()}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all
+                ${!isExploreMode ? 'bg-ink text-vellum-100 shadow-sm' : 'text-ink-muted hover:text-ink'}
+              `}
+              title="Guided Keynote Mode (Space / Arrows to advance)"
+            >
+              <Presentation className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Guided Keynote</span>
+            </button>
+
+            <button
+              onClick={() => !isExploreMode && onToggleMode()}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all
+                ${isExploreMode ? 'bg-ink text-vellum-100 shadow-sm' : 'text-ink-muted hover:text-ink'}
+              `}
+              title="Free Explore Mode (Pan & Zoom freely)"
+            >
+              <Compass className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Free Explore</span>
+            </button>
+          </div>
+
+          {/* Cinema Stage Mode Toggle */}
           <button
-            onClick={() => !isExploreMode && onToggleMode()}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all
-              ${isExploreMode ? 'bg-ink text-vellum-100 shadow-sm' : 'text-ink-muted hover:text-ink'}
+            onClick={onToggleCinema}
+            className={`p-2 rounded-2xl glass-panel text-xs transition-all border border-vellum-400/80 shadow-md hidden sm:block
+              ${isCinemaMode ? 'bg-terracotta text-white' : 'text-ink-muted hover:text-ink'}
             `}
-            title="Free Explore Mode (Pan & Zoom freely)"
+            title="Toggle Cinematic Projection Mode (C)"
           >
-            <Compass className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Free Explore</span>
+            <Film className="w-4 h-4" />
           </button>
+
         </div>
 
       </div>
 
-      {/* Bottom Left: Anthropic-style "Click a card to explore" pill */}
-      <div className="fixed bottom-6 left-6 z-30 pointer-events-none hidden sm:block">
-        <div className="glass-panel px-3.5 py-2 rounded-xl border border-vellum-400 pointer-events-auto text-xs text-ink-muted shadow-sm flex items-center gap-2">
+      {/* Bottom Left: Anthropic-style Callout */}
+      <div className={`fixed bottom-6 left-6 z-30 pointer-events-none hidden sm:block transition-opacity duration-500 ${isCinemaMode ? 'opacity-0' : 'opacity-100'}`}>
+        <div className="glass-panel px-3.5 py-2 rounded-xl border border-vellum-400/80 pointer-events-auto text-xs text-ink-muted shadow-sm flex items-center gap-2">
           <Info className="w-3.5 h-3.5 text-terracotta" />
-          <span>Click any card to read case studies & prompts</span>
+          <span>Click any visual card to explore case studies & prompts</span>
         </div>
       </div>
 
-      {/* Bottom Right: Floating Zoom Controls (Anthropic Style) */}
-      <div className="fixed bottom-6 right-6 z-30 pointer-events-none">
-        <div className="glass-panel p-1 rounded-2xl border border-vellum-400 pointer-events-auto shadow-lg flex items-center gap-1">
+      {/* Bottom Right: Floating Zoom Controls */}
+      <div className={`fixed bottom-6 right-6 z-30 pointer-events-none transition-opacity duration-500 ${isCinemaMode ? 'opacity-0' : 'opacity-100'}`}>
+        <div className="glass-panel p-1 rounded-2xl border border-vellum-400/80 pointer-events-auto shadow-lg flex items-center gap-1">
           <span className="text-[11px] text-ink-muted px-2 font-mono hidden sm:inline">Zoom</span>
           <button
             onClick={onZoomIn}

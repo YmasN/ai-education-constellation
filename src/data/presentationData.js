@@ -4,83 +4,82 @@ export const presentationData = {
     subtitle: "Cultivating Natural Intelligence Across Education, Science & Living",
     author: "Ymas Navognale",
     durationMinutes: 10,
-    version: "1.0.0"
+    version: "2.0.0"
   },
 
-  // Central Constellation Hubs
+  // Central Constellation Hubs styled as Compelling Human Inquiries
   hubs: [
     {
       id: "hub-grounding",
-      title: "The Human Center",
-      thesis: "AI does not replace human intellect — it is a cognitive bicycle for the curious mind.",
+      question: "What is natural intelligence in an automated era?",
+      category: "The Human Center",
+      thesis: "AI does not replace human intellect — it is a cognitive bicycle for natural human curiosity.",
       color: "#C25E3E", // Terracotta
-      accentBg: "#FDF4F0",
+      accentGlow: "rgba(194, 94, 62, 0.15)",
       x: 0,
-      y: -60,
-      radius: 85
+      y: -60
     },
     {
       id: "hub-teaching",
-      title: "Teaching & Pedagogy",
-      thesis: "Moving past the adversarial detection trap to reclaim authentic mentorship.",
+      question: "How should we teach?",
+      category: "Teaching & Pedagogy",
+      thesis: "Moving past the adversarial detection trap to reclaim authentic 1-on-1 student mentorship.",
       color: "#C25E3E",
-      accentBg: "#FDF4F0",
-      x: -620,
-      y: -420,
-      radius: 95
+      accentGlow: "rgba(194, 94, 62, 0.18)",
+      x: -640,
+      y: -420
     },
     {
       id: "hub-learning",
-      title: "Learning & Equity",
-      thesis: "A patient, 24/7 Socratic companion scaffolding neurodiverse and first-gen students.",
+      question: "How do students learn?",
+      category: "Learning & Equity",
+      thesis: "A patient, 24/7 Socratic companion scaffolding neurodiverse and first-generation learners.",
       color: "#4A6B53", // Sage
-      accentBg: "#EDF5F0",
-      x: 620,
-      y: -420,
-      radius: 95
+      accentGlow: "rgba(74, 107, 83, 0.18)",
+      x: 640,
+      y: -420
     },
     {
       id: "hub-science",
-      title: "Science & Robotics",
-      thesis: "Augmenting physical lab hands and computational minds to accelerate discoveries.",
+      question: "Can AI accelerate discovery?",
+      category: "Science & Robotics",
+      thesis: "Augmenting physical lab hands and computational pattern recognition to solve planetary crises.",
       color: "#2C3E6B", // Deep Indigo
-      accentBg: "#EFF3FA",
-      x: -650,
-      y: 380,
-      radius: 95
+      accentGlow: "rgba(44, 62, 107, 0.18)",
+      x: -660,
+      y: 400
     },
     {
       id: "hub-ethics",
-      title: "Ethics & The Eco-Ledger",
-      thesis: "Confronting hallucinations, academic integrity, and compute energy with frugality.",
+      question: "What is our ethical & ecological ledger?",
+      category: "Ethics & Environment",
+      thesis: "Confronting hallucinations, academic integrity, and compute energy with principled frugality.",
       color: "#B8860B", // Amber
-      accentBg: "#FDF8ED",
-      x: 650,
-      y: 380,
-      radius: 95
+      accentGlow: "rgba(184, 134, 11, 0.18)",
+      x: 660,
+      y: 400
     },
     {
       id: "hub-living",
-      title: "Living & Flourishing",
+      question: "How do we live and flourish?",
+      category: "Everyday Living",
       thesis: "Reclaiming executive mental bandwidth so humans have room for wonder, rest, and connection.",
-      color: "#8B5E3C", // Warm Sienna
-      accentBg: "#F9F4F0",
+      color: "#8B5E3C", // Sienna
+      accentGlow: "rgba(139, 94, 60, 0.18)",
       x: 0,
-      y: 720,
-      radius: 90
+      y: 740
     }
   ],
 
-  // Satellite Nodes (Orbiting Cards)
+  // Satellite Nodes (Orbiting Visual Vignettes)
   nodes: [
     // --- Teaching Hub ---
     {
       id: "node-detection-trap",
       hubId: "hub-teaching",
       title: "The Detection Fallacy",
-      tag: "Academic Integrity",
-      icon: "ShieldAlert",
-      x: -860,
+      tag: "Integrity",
+      x: -880,
       y: -580,
       summary: "Commercial AI detectors generate false positives, penalize non-native English speakers, and create adversarial classrooms.",
       caseStudy: "Vanderbilt and other leading institutions disabled Turnitin's AI detector after studies showed error rates exceeding 20% on ESL student writing.",
@@ -92,10 +91,9 @@ export const presentationData = {
       id: "node-authentic-assessment",
       hubId: "hub-teaching",
       title: "Authentic Assessment",
-      tag: "Assessment Design",
-      icon: "FileCheck",
+      tag: "Pedagogy",
       x: -420,
-      y: -590,
+      y: -600,
       summary: "Replacing generic five-page essays with process-based evaluations, defense interviews, and real-world synthesis.",
       caseStudy: "Biology courses having students use AI to generate three competing hypotheses on cellular mutation, then defend in lab which one violates thermodynamic laws.",
       facultyAction: "Add a 2-minute audio reflection or 3-question viva voce (oral defense) where students explain *why* their final argument holds weight.",
@@ -106,9 +104,8 @@ export const presentationData = {
       id: "node-reclaim-time",
       hubId: "hub-teaching",
       title: "Reclaiming Office Hours",
-      tag: "Faculty Well-being",
-      icon: "Clock",
-      x: -780,
+      tag: "Mentorship",
+      x: -800,
       y: -260,
       summary: "Offloading repetitive administrative drudgery (rubric formatting, routine email FAQs) to double 1-on-1 mentorship time.",
       caseStudy: "Faculty report spending up to 40% of their weekly schedule drafting repetitive syllabus clarifications. Custom course GPTs answered 600 basic scheduling FAQs.",
@@ -122,10 +119,9 @@ export const presentationData = {
       id: "node-socratic-mentor",
       hubId: "hub-learning",
       title: "The 24/7 Socratic Partner",
-      tag: "Personalized Learning",
-      icon: "Sparkles",
+      tag: "Personalized",
       x: 420,
-      y: -590,
+      y: -600,
       summary: "A private, infinitely patient tutor that never rolls its eyes when a hesitant student asks the same question six times.",
       caseStudy: "Harvard's CS50 introduced the CS50 AI Bot, explicitly engineered to never give direct answers, but to ask guided questions that lead students to find their own bugs.",
       facultyAction: "Instruct students to prompt: 'Act as a Socratic philosopher. Do not give me the answer. Ask me one question at a time to test my assumptions on this topic.'",
@@ -135,10 +131,9 @@ export const presentationData = {
     {
       id: "node-neurodiversity",
       hubId: "hub-learning",
-      title: "Neurodiversity & Scaffolding",
+      title: "Neurodiversity Scaffolding",
       tag: "Accessibility",
-      icon: "Brain",
-      x: 840,
+      x: 880,
       y: -580,
       summary: "Transforming dense academic texts into audio dialogues, mind maps, or sensory-friendly step-by-step breakdowns for ADHD and dyslexia.",
       caseStudy: "Students with executive dysfunction using voice-to-text brainstorming models to unblock thesis paralysis, turning scattered thoughts into structured outlines.",
@@ -150,9 +145,8 @@ export const presentationData = {
       id: "node-first-gen",
       hubId: "hub-learning",
       title: "First-Gen Equalizer",
-      tag: "Equity & Inclusion",
-      icon: "GraduationCap",
-      x: 780,
+      tag: "Equity",
+      x: 800,
       y: -260,
       summary: "Demystifying the 'hidden curriculum' of higher education (navigating grant applications, professorial etiquette, office hour prep).",
       caseStudy: "First-generation university students using conversational AI to draft professional inquiries to lab directors without fear of sounding 'unacademic'.",
@@ -165,10 +159,9 @@ export const presentationData = {
     {
       id: "node-alphafold",
       hubId: "hub-science",
-      title: "AlphaFold & Molecular Frontiers",
-      tag: "Scientific Discovery",
-      icon: "Dna",
-      x: -880,
+      title: "AlphaFold & Proteomics",
+      tag: "Biotech",
+      x: -900,
       y: 220,
       summary: "Predicting 200 million protein structures in months—a feat that would have taken human crystallographers billions of laboratory hours.",
       caseStudy: "Biochemists globally using predicted enzyme structures to design plastic-eating bacteria and targeted cancer treatments.",
@@ -179,25 +172,23 @@ export const presentationData = {
     {
       id: "node-robotic-pipetting",
       hubId: "hub-science",
-      title: "Autonomous Wet Labs & Robotics",
-      tag: "Physical Automation",
-      icon: "Bot",
-      x: -880,
-      y: 540,
+      title: "Autonomous Wet Labs",
+      tag: "Robotics",
+      x: -900,
+      y: 560,
       summary: "Robotic arms executing thousands of continuous micro-fluidic assays while machine learning agents interpret spectral data in real time.",
       caseStudy: "Self-driving chemistry laboratories (e.g., University of Toronto's Acceleration Consortium) synthesizing and analyzing new solar-cell light absorbers 24/7.",
       facultyAction: "Train graduate researchers on robotic orchestration and telemetry rather than manual pipetting, shifting human labor from mechanical execution to hypothesis critique.",
       ethicsOrEco: "Augmentation, not obsolescence: robotics handles hazardous solvent transfers while human chemists govern safety and purpose.",
-      keyQuote: "Robotics provides the hands; AI provides the pattern recognition; humans provide the scientific intuition."
+      keyQuote: "Robotics provides the hands; AI provides pattern recognition; humans supply scientific intuition."
     },
     {
       id: "node-materials-battery",
       hubId: "hub-science",
-      title: "Clean Energy & Materials Science",
-      tag: "Planetary Solutions",
-      icon: "Zap",
+      title: "Clean Energy & Materials",
+      tag: "CleanTech",
       x: -460,
-      y: 520,
+      y: 540,
       summary: "Screening millions of crystal structures to discover non-toxic, solid-state battery electrolytes and carbon-capture catalysts.",
       caseStudy: "PNNL and Microsoft used AI to narrow 32 million inorganic materials to 18 viable battery candidates in 80 hours, synthesizing a working prototype that uses 70% less lithium.",
       facultyAction: "Create cross-departmental seminars linking computational data science with material chemistry to solve regional environmental bottlenecks.",
@@ -209,10 +200,9 @@ export const presentationData = {
     {
       id: "node-carbon-water",
       hubId: "hub-ethics",
-      title: "Compute Energy & Water Reality",
-      tag: "Environmental Impact",
-      icon: "Leaf",
-      x: 880,
+      title: "Energy & Water Ledger",
+      tag: "Ecology",
+      x: 900,
       y: 220,
       summary: "Acknowledging hyperscale data centers' electricity and cooling water demands with complete institutional transparency.",
       caseStudy: "Training a single frontier model can consume thousands of megawatt-hours. Cooling servers in drought-prone regions raises ethical municipal questions.",
@@ -223,11 +213,10 @@ export const presentationData = {
     {
       id: "node-slm-frugality",
       hubId: "hub-ethics",
-      title: "Small Language Models (SLMs)",
-      tag: "Green Computing",
-      icon: "Cpu",
-      x: 880,
-      y: 540,
+      title: "Small Language Models",
+      tag: "Green Compute",
+      x: 900,
+      y: 560,
       summary: "Lightweight, specialized models running locally on campus laptops and edge devices with a fraction of the energy and zero external data tracking.",
       caseStudy: "Edge models (e.g., Phi-3, Gemma, Llama-3-8B) achieving 90% of frontier model accuracy on specialized medical and legal translation with 1/50th the energy footprint.",
       facultyAction: "Teach students how to run quantized local open-weights models offline on their own hardware, preserving complete student data privacy.",
@@ -237,11 +226,10 @@ export const presentationData = {
     {
       id: "node-bias-hallucination",
       hubId: "hub-ethics",
-      title: "Auditing Bias & Hallucination",
-      tag: "Information Literacy",
-      icon: "Scale",
+      title: "Auditing Hallucinations",
+      tag: "Literacy",
       x: 460,
-      y: 520,
+      y: 540,
       summary: "Treating AI outputs as first drafts created by a brilliant but confident intern who requires rigorous human peer review.",
       caseStudy: "History seminars having students fact-check generated timelines of civil rights movements, uncovering subtle historical erasures in the model's training data.",
       facultyAction: "Design exercises where students receive credit specifically for discovering, diagnosing, and correcting algorithmic hallucinations.",
@@ -253,11 +241,10 @@ export const presentationData = {
     {
       id: "node-mental-bandwidth",
       hubId: "hub-living",
-      title: "Executive Function Scaffolding",
-      tag: "Daily Well-being",
-      icon: "Smile",
+      title: "Executive Function Ease",
+      tag: "Well-being",
       x: -360,
-      y: 840,
+      y: 860,
       summary: "Offloading the constant cognitive friction of logistical life: calendar conflict triage, grocery budgeting, medical paperwork translation.",
       caseStudy: "Working parents and caregivers using conversational agents to consolidate school communications, therapy appointments, and weekly meal prep in minutes.",
       facultyAction: "Model healthy boundaries: use AI to compress low-value communication tasks so your personal evenings are protected for family, nature, and sleep.",
@@ -267,11 +254,10 @@ export const presentationData = {
     {
       id: "node-lifelong-curiosity",
       hubId: "hub-living",
-      title: "Lifelong Curiosity & Wonder",
-      tag: "Human Flourishing",
-      icon: "Compass",
+      title: "Boundless Curiosity",
+      tag: "Flourishing",
       x: 360,
-      y: 840,
+      y: 860,
       summary: "Empowering non-specialists to explore astronomy, master new languages, restore vintage radios, or write poetry across all stages of life.",
       caseStudy: "Retired seniors using multimodal image-to-speech tools to identify garden pollinators, translate old family letters from Italian, and record oral memoirs.",
       facultyAction: "Encourage students to pursue 'unassigned curiosity'—using conversational AI to explore questions outside their declared major simply for the joy of learning.",
@@ -311,7 +297,7 @@ export const presentationData = {
       subtitle: "Authentic Assessment & Reclaiming the Mentorship Bond",
       targetTime: "01:30 - 03:00",
       targetSeconds: 180,
-      camera: { x: -620, y: -420, zoom: 0.95 },
+      camera: { x: -640, y: -420, zoom: 0.95 },
       activeNodeIds: ["node-detection-trap", "node-authentic-assessment", "node-reclaim-time"],
       keyMessage: "Stop policing writing with broken detectors. Automate the admin drudgery to double human office hours.",
       speakerCues: [
@@ -330,7 +316,7 @@ export const presentationData = {
       subtitle: "Personalized Scaffolding for Every Brain and Background",
       targetTime: "03:00 - 04:30",
       targetSeconds: 270,
-      camera: { x: 620, y: -420, zoom: 0.95 },
+      camera: { x: 640, y: -420, zoom: 0.95 },
       activeNodeIds: ["node-socratic-mentor", "node-neurodiversity", "node-first-gen"],
       keyMessage: "A 24/7 patient mentor that levels the playing field for neurodiverse and first-generation learners.",
       speakerCues: [
@@ -349,7 +335,7 @@ export const presentationData = {
       subtitle: "From AlphaFold to Autonomous Wet-Lab Robotics",
       targetTime: "04:30 - 06:30",
       targetSeconds: 390,
-      camera: { x: -650, y: 380, zoom: 0.95 },
+      camera: { x: -660, y: 400, zoom: 0.95 },
       activeNodeIds: ["node-alphafold", "node-robotic-pipetting", "node-materials-battery"],
       keyMessage: "Robotics provides the tireless hands, AI finds the hidden patterns, but humans supply scientific wisdom.",
       speakerCues: [
@@ -368,7 +354,7 @@ export const presentationData = {
       subtitle: "Compute Frugality, Local SLMs & Verifiable Integrity",
       targetTime: "06:30 - 08:00",
       targetSeconds: 480,
-      camera: { x: 650, y: 380, zoom: 0.95 },
+      camera: { x: 660, y: 400, zoom: 0.95 },
       activeNodeIds: ["node-carbon-water", "node-slm-frugality", "node-bias-hallucination"],
       keyMessage: "Address the carbon and water footprint head-on. Shift to Small Language Models and compute frugality.",
       speakerCues: [
@@ -387,7 +373,7 @@ export const presentationData = {
       subtitle: "Reclaiming Attention in an Age of Cognitive Overload",
       targetTime: "08:00 - 09:00",
       targetSeconds: 540,
-      camera: { x: 0, y: 720, zoom: 1.0 },
+      camera: { x: 0, y: 740, zoom: 1.0 },
       activeNodeIds: ["node-mental-bandwidth", "node-lifelong-curiosity"],
       keyMessage: "AI relieves administrative burnout so we can invest in what actually matters: relationships and wonder.",
       speakerCues: [
@@ -406,7 +392,7 @@ export const presentationData = {
       subtitle: "Wisdom Over Mere Computation",
       targetTime: "09:00 - 10:00",
       targetSeconds: 600,
-      camera: { x: 0, y: 120, zoom: 0.52 }, // Pull back to reveal entire glowing constellation
+      camera: { x: 0, y: 80, zoom: 0.50 }, // Pull back to reveal entire glowing constellation
       activeNodeIds: [],
       keyMessage: "AI can generate information, but only human teachers inspire wisdom. Natural intelligence remains the center.",
       speakerCues: [

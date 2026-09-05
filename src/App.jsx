@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { presentationData } from './data/presentationData';
 import ConstellationCanvas from './components/ConstellationCanvas';
 import KeynoteHUD from './components/KeynoteHUD';
@@ -8,6 +8,7 @@ import CanvasControls from './components/CanvasControls';
 
 export default function App() {
   const [isExploreMode, setIsExploreMode] = useState(false);
+  const [isCinemaMode, setIsCinemaMode] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [selectedNode, setSelectedNode] = useState(null);
   const [showPresenterNotes, setShowPresenterNotes] = useState(false);
@@ -61,12 +62,11 @@ export default function App() {
     }
   }, [currentStepIndex]);
 
-  // Mode Toggle
+  // Mode Toggles
   const handleToggleMode = () => {
     setIsExploreMode((prev) => {
       const nextMode = !prev;
       if (!nextMode) {
-        // Switching back to keynote: restore active stop camera
         setCamera({
           x: activeStop.camera.x,
           y: activeStop.camera.y,
@@ -75,6 +75,10 @@ export default function App() {
       }
       return nextMode;
     });
+  };
+
+  const handleToggleCinema = () => {
+    setIsCinemaMode((prev) => !prev);
   };
 
   // Fullscreen
@@ -98,8 +102,8 @@ export default function App() {
   const handleResetZoom = () => {
     setCamera({
       x: 0,
-      y: 100,
-      zoom: 0.65
+      y: 80,
+      zoom: 0.58
     });
   };
 
@@ -115,7 +119,6 @@ export default function App() {
   // Keyboard navigation & hotkeys
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Don't intercept if an input is focused
       if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
 
       switch (e.code) {
@@ -134,6 +137,10 @@ export default function App() {
         case 'KeyT':
           e.preventDefault();
           setShowPresenterNotes((prev) => !prev);
+          break;
+        case 'KeyC':
+          e.preventDefault();
+          handleToggleCinema();
           break;
         case 'KeyF':
           e.preventDefault();
@@ -162,7 +169,9 @@ export default function App() {
       {/* Top Header & Floating Controls */}
       <CanvasControls
         isExploreMode={isExploreMode}
+        isCinemaMode={isCinemaMode}
         onToggleMode={handleToggleMode}
+        onToggleCinema={handleToggleCinema}
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onResetZoom={handleResetZoom}
@@ -187,12 +196,13 @@ export default function App() {
           totalStops={presentationData.keynoteStops.length}
           elapsedSeconds={elapsedSeconds}
           isTimerRunning={isTimerRunning}
+          isCinemaMode={isCinemaMode}
           showPresenterNotes={showPresenterNotes}
           onPrev={handlePrev}
           onNext={handleNext}
           onToggleNotes={() => setShowPresenterNotes((prev) => !prev)}
           onToggleFullscreen={handleToggleFullscreen}
-          onToggleMode={handleToggleMode}
+          onToggleCinema={handleToggleCinema}
         />
       )}
 
