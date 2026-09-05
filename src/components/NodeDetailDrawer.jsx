@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import * as Icons from 'lucide-react';
-import { X, Copy, Check, Quote, AlertTriangle, Lightbulb, BookOpen } from 'lucide-react';
+import { iconMap, HelpCircle, X, Copy, Check, Quote, AlertTriangle, Lightbulb, BookOpen } from './Icons';
 
 export default function NodeDetailDrawer({ node, onClose }) {
   const [copied, setCopied] = useState(false);
   if (!node) return null;
 
-  const IconComponent = Icons[node.icon] || Icons.HelpCircle;
+  const IconComponent = iconMap[node.icon] || HelpCircle;
 
   const handleCopyPrompt = () => {
     navigator.clipboard.writeText(node.facultyAction);

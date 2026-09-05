@@ -1,9 +1,8 @@
 import React from 'react';
-import * as Icons from 'lucide-react';
+import { iconMap, HelpCircle } from './Icons';
 
 export default function NodeCard({ node, isHighlighted, onClick }) {
-  // Dynamically resolve icon from lucide-react with fallback
-  const IconComponent = Icons[node.icon] || Icons.HelpCircle;
+  const IconComponent = iconMap[node.icon] || HelpCircle;
 
   return (
     <div
