@@ -63,6 +63,43 @@ export default function VisualArtifact({ nodeId, className = "w-full h-full" }) 
         </svg>
       );
 
+    // Staff & Administrator Empowerment: Compassionate Hands & Guiding Beacon
+    case 'node-staff-empowerment':
+      return (
+        <svg viewBox="0 0 100 100" className={className} fill="none">
+          <rect width="100" height="100" fill="#151E1C" />
+          <path d="M22 75 C30 65 42 68 50 64 C58 68 70 65 78 75 L78 88 L22 88 Z" fill="#1D6363" fillOpacity="0.3" stroke="#1D6363" strokeWidth="1.5" />
+          {/* Radiating beacon */}
+          <circle cx="50" cy="40" r="14" stroke="#A51C30" strokeWidth="2" />
+          <circle cx="50" cy="40" r="5" fill="#FAF9F6" />
+          <line x1="50" y1="18" x2="50" y2="24" stroke="#FAF9F6" strokeWidth="1.5" />
+          <line x1="28" y1="40" x2="34" y2="40" stroke="#FAF9F6" strokeWidth="1.5" />
+          <line x1="66" y1="40" x2="72" y2="40" stroke="#FAF9F6" strokeWidth="1.5" />
+          <line x1="35" y1="25" x2="39" y2="29" stroke="#D4AF37" strokeWidth="1.2" />
+          <line x1="65" y1="25" x2="61" y2="29" stroke="#D4AF37" strokeWidth="1.2" />
+          <path d="M36 54 L50 64 L64 54" stroke="#FAF9F6" strokeWidth="1.2" strokeDasharray="2 2" />
+        </svg>
+      );
+
+    // End-to-End Lifecycle Automation: Orbital Journey & Interlocking Nexus
+    case 'node-lifecycle-automation':
+      return (
+        <svg viewBox="0 0 100 100" className={className} fill="none">
+          <rect width="100" height="100" fill="#18171B" />
+          {/* Orbital path */}
+          <ellipse cx="50" cy="50" rx="34" ry="24" transform="rotate(-25 50 50)" stroke="#A51C30" strokeWidth="1.8" strokeDasharray="3 3" />
+          <ellipse cx="50" cy="50" rx="24" ry="34" transform="rotate(-25 50 50)" stroke="#1D6363" strokeWidth="1.4" />
+          {/* Lifecycle nexus milestones */}
+          <circle cx="26" cy="38" r="4.5" fill="#FAF9F6" stroke="#A51C30" strokeWidth="1.5" />
+          <circle cx="68" cy="28" r="4.5" fill="#D4AF37" stroke="#A51C30" strokeWidth="1.5" />
+          <circle cx="74" cy="62" r="4.5" fill="#FAF9F6" stroke="#1D6363" strokeWidth="1.5" />
+          <circle cx="32" cy="72" r="4.5" fill="#A51C30" stroke="#FAF9F6" strokeWidth="1.5" />
+          {/* Central gear core */}
+          <circle cx="50" cy="50" r="8" stroke="#FAF9F6" strokeWidth="1.2" />
+          <circle cx="50" cy="50" r="3" fill="#D4AF37" />
+        </svg>
+      );
+
     // 4. Socratic Partner: Golden Spiral & Luminous Nautilus
     case 'node-socratic-mentor':
       return (
