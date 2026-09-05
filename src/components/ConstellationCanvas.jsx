@@ -298,12 +298,21 @@ export default function ConstellationCanvas({
             className="absolute overflow-visible pointer-events-none z-10"
             style={{ left: 0, top: 0 }}
           >
-            {/* Inter-hub structural web lines */}
-            <path d="M 0 -50 L -500 -330" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -50 L 500 -330" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -50 L -520 310" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -50 L 520 310" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -50 L 0 580" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            {/* Inter-hub structural web lines (radial connections from center to 6 hubs) */}
+            <path d="M 0 -30 L -360 -250" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -30 L 360 -250" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -30 L -440 70" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -30 L 440 70" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -30 L -260 380" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -30 L 260 380" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+
+            {/* Structural perimeter lines between adjacent hubs */}
+            <path d="M -360 -250 L 360 -250" stroke="rgba(120, 113, 108, 0.12)" strokeWidth="1" strokeDasharray="4 6" fill="none" />
+            <path d="M 360 -250 L 440 70" stroke="rgba(120, 113, 108, 0.12)" strokeWidth="1" strokeDasharray="4 6" fill="none" />
+            <path d="M 440 70 L 260 380" stroke="rgba(120, 113, 108, 0.12)" strokeWidth="1" strokeDasharray="4 6" fill="none" />
+            <path d="M 260 380 L -260 380" stroke="rgba(120, 113, 108, 0.12)" strokeWidth="1" strokeDasharray="4 6" fill="none" />
+            <path d="M -260 380 L -440 70" stroke="rgba(120, 113, 108, 0.12)" strokeWidth="1" strokeDasharray="4 6" fill="none" />
+            <path d="M -440 70 L -360 -250" stroke="rgba(120, 113, 108, 0.12)" strokeWidth="1" strokeDasharray="4 6" fill="none" />
 
             {/* Bezier Spoke Lines to Satellite Nodes */}
             {data.nodes.map((node) => {
