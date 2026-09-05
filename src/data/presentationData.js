@@ -1,13 +1,13 @@
 export const presentationData = {
   meta: {
-    title: "Keep thinking.",
+    title: "Let's keep thinking.",
     subtitle: "Cultivating Natural Intelligence Across Education, Science & Living",
     author: "Ymas Navognale",
     durationMinutes: 10,
-    version: "2.0.0"
+    version: "2.1.0"
   },
 
-  // Central Constellation Hubs styled as Compelling Human Inquiries
+  // Central Constellation Hubs
   hubs: [
     {
       id: "hub-grounding",
@@ -15,7 +15,7 @@ export const presentationData = {
       category: "The Human Center",
       thesis: "AI does not replace human intellect — it is a cognitive bicycle for natural human curiosity.",
       color: "#C25E3E", // Terracotta
-      accentGlow: "rgba(194, 94, 62, 0.15)",
+      accentGlow: "rgba(194, 94, 62, 0.18)",
       x: 0,
       y: -60
     },
@@ -266,17 +266,38 @@ export const presentationData = {
     }
   ],
 
-  // 7 Guided Keynote Stops for the 10-Minute Talk
+  // Keynote Stops starting with Prologue: "Let's keep thinking."
   keynoteStops: [
+    {
+      id: "stop-prologue",
+      hubId: null,
+      stepNumber: 0,
+      totalSteps: 8,
+      isPrologue: true,
+      label: "Prologue • Introduction",
+      title: "Let's keep thinking.",
+      subtitle: "Augmenting Natural Intelligence in an Automated Era",
+      targetTime: "00:00",
+      targetSeconds: 30,
+      camera: { x: 0, y: 0, zoom: 0.45 },
+      activeNodeIds: [],
+      keyMessage: "Begin with quiet contemplation. Open the floor: Let's keep thinking.",
+      speakerCues: [
+        "Silence for 3-5 seconds. Let the single sentence land on the auditorium screen.",
+        "Acknowledge the anxiety in the room: faculty fatigue, cheating fears, technological vertigo.",
+        "Invite the audience: 'Before we panic, and before we surrender to hype... let's keep thinking.'",
+        "Press Space or roll the scrollwheel to zoom into the constellation."
+      ]
+    },
     {
       id: "stop-grounding",
       hubId: "hub-grounding",
       stepNumber: 1,
-      totalSteps: 7,
+      totalSteps: 8,
       label: "01 / 07 • The Human Center",
       title: "Meeting Hesitation with Empathy",
       subtitle: "The Soul of Higher Education in an Automated Era",
-      targetTime: "00:00 - 01:30",
+      targetTime: "00:30 - 01:30",
       targetSeconds: 90,
       camera: { x: 0, y: -60, zoom: 1.15 },
       activeNodeIds: [],
@@ -291,7 +312,7 @@ export const presentationData = {
       id: "stop-teaching",
       hubId: "hub-teaching",
       stepNumber: 2,
-      totalSteps: 7,
+      totalSteps: 8,
       label: "02 / 07 • Teaching & Pedagogy",
       title: "Beyond the Detection Trap",
       subtitle: "Authentic Assessment & Reclaiming the Mentorship Bond",
@@ -310,7 +331,7 @@ export const presentationData = {
       id: "stop-learning",
       hubId: "hub-learning",
       stepNumber: 3,
-      totalSteps: 7,
+      totalSteps: 8,
       label: "03 / 07 • Learning & Equity",
       title: "The Socratic Companion",
       subtitle: "Personalized Scaffolding for Every Brain and Background",
@@ -329,7 +350,7 @@ export const presentationData = {
       id: "stop-science",
       hubId: "hub-science",
       stepNumber: 4,
-      totalSteps: 7,
+      totalSteps: 8,
       label: "04 / 07 • Science & Discovery",
       title: "Augmenting Hands & Minds in the Lab",
       subtitle: "From AlphaFold to Autonomous Wet-Lab Robotics",
@@ -348,7 +369,7 @@ export const presentationData = {
       id: "stop-ethics",
       hubId: "hub-ethics",
       stepNumber: 5,
-      totalSteps: 7,
+      totalSteps: 8,
       label: "05 / 07 • Ethics & Environment",
       title: "The Ethical & Ecological Ledger",
       subtitle: "Compute Frugality, Local SLMs & Verifiable Integrity",
@@ -367,7 +388,7 @@ export const presentationData = {
       id: "stop-living",
       hubId: "hub-living",
       stepNumber: 6,
-      totalSteps: 7,
+      totalSteps: 8,
       label: "06 / 07 • Living & Well-being",
       title: "Everyday Human Flourishing",
       subtitle: "Reclaiming Attention in an Age of Cognitive Overload",
@@ -386,13 +407,13 @@ export const presentationData = {
       id: "stop-synthesis",
       hubId: "hub-grounding",
       stepNumber: 7,
-      totalSteps: 7,
+      totalSteps: 8,
       label: "07 / 07 • The Synthesis",
       title: "Cultivating Natural Intelligence",
       subtitle: "Wisdom Over Mere Computation",
       targetTime: "09:00 - 10:00",
       targetSeconds: 600,
-      camera: { x: 0, y: 80, zoom: 0.50 }, // Pull back to reveal entire glowing constellation
+      camera: { x: 0, y: 80, zoom: 0.50 },
       activeNodeIds: [],
       keyMessage: "AI can generate information, but only human teachers inspire wisdom. Natural intelligence remains the center.",
       speakerCues: [

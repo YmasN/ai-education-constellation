@@ -9,7 +9,8 @@ export default function ConstellationCanvas({
   activeStop,
   onNodeClick,
   onManualPanZoom,
-  onHubClick
+  onHubClick,
+  onEnterConstellation
 }) {
   const containerRef = useRef(null);
   
@@ -28,11 +29,16 @@ export default function ConstellationCanvas({
   const animFrameRef = useRef(null);
   const prevCameraRef = useRef(camera);
 
+  // Determine if prologue mode is active
+  const isPrologueActive = activeStop?.isPrologue || 
+    (!isExploreMode && activeStop?.stepNumber === 0) || 
+    (isExploreMode && camState.zoom < 0.52 && Math.hypot(camState.x, camState.y) < 180);
+
   // Play cinematic swoop when camera changes significantly in Keynote mode
   useEffect(() => {
     const prev = prevCameraRef.current;
     const dist = Math.hypot(camera.x - prev.x, camera.y - prev.y);
-    if (dist > 150) {
+    if (dist > 120) {
       soundEngine.playCameraSwoop();
     }
     prevCameraRef.current = camera;
@@ -49,7 +55,6 @@ export default function ConstellationCanvas({
       const dy = camera.y - currentY;
       const dz = camera.zoom - currentZoom;
 
-      // Calculate subtle dynamic camera tilt based on velocity
       const targetTiltX = Math.max(Math.min(-dy * 0.008, 4), -4);
       const targetTiltY = Math.max(Math.min(dx * 0.008, 5), -5);
 
@@ -171,7 +176,6 @@ export default function ConstellationCanvas({
     isDraggingRef.current = false;
   };
 
-  // Find currently active hub for volumetric lighting
   const currentActiveHub = data.hubs.find(h => h.id === activeStop?.hubId) || data.hubs[0];
 
   return (
@@ -187,9 +191,9 @@ export default function ConstellationCanvas({
       className="relative w-full h-full overflow-hidden paper-pattern cursor-grab active:cursor-grabbing select-none"
     >
       {/* Cinematic Vignette Shadow Overlay */}
-      <div className="absolute inset-0 pointer-events-none z-30 shadow-[inset_0_0_120px_rgba(27,25,23,0.15)]" />
+      <div className="absolute inset-0 pointer-events-none z-30 shadow-[inset_0_0_140px_rgba(27,25,23,0.18)]" />
 
-      {/* Floating Stardust Particles (3 Parallax Layers) */}
+      {/* Floating Stardust Particles */}
       <div className="absolute inset-0 pointer-events-none opacity-50 z-0">
         <svg className="w-full h-full">
           <circle cx="12%" cy="18%" r="1.5" fill="#C25E3E" opacity="0.6" className="animate-pulse" />
@@ -198,8 +202,6 @@ export default function ConstellationCanvas({
           <circle cx="75%" cy="80%" r="2.2" fill="#B8860B" opacity="0.6" />
           <circle cx="48%" cy="15%" r="1.2" fill="#1B1917" opacity="0.4" />
           <circle cx="52%" cy="88%" r="1.8" fill="#C25E3E" opacity="0.5" className="animate-pulse" />
-          <circle cx="92%" cy="48%" r="1.5" fill="#8B5E3C" opacity="0.4" />
-          <circle cx="8%" cy="52%" r="1.5" fill="#2C3E6B" opacity="0.5" />
         </svg>
       </div>
 
@@ -213,128 +215,164 @@ export default function ConstellationCanvas({
           transformOrigin: '0 0'
         }}
       >
-        {/* Volumetric Glowing Aura Behind Active Hub */}
-        {currentActiveHub && (
+        
+        {/* ============================================================== */}
+        {/* PROLOGUE STAGE: "Let's keep thinking." Hero Opener             */}
+        {/* ============================================================== */}
+        <div
+          style={{ left: '0px', top: '0px', transform: 'translate(-50%, -50%)' }}
+          className={`absolute flex flex-col items-center justify-center text-center transition-all duration-1000 select-none z-40 max-w-4xl px-6
+            ${isPrologueActive ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-125 pointer-events-none'}
+          `}
+        >
+          <span className="text-xs uppercase font-mono tracking-widest text-terracotta mb-6 font-semibold px-4 py-1.5 rounded-full bg-vellum-200/90 border border-vellum-300 shadow-sm">
+            Higher Education Keynote
+          </span>
+          <h1 className="font-editorial text-6xl sm:text-8xl md:text-9xl font-light text-ink tracking-tight leading-none">
+            Let's keep <span className="italic font-normal text-terracotta">thinking.</span>
+          </h1>
+          <p className="font-editorial text-xl sm:text-2xl text-ink-muted mt-6 max-w-xl italic leading-relaxed">
+            Cultivating natural intelligence across education, science, and living.
+          </p>
+
+          <div className="mt-10 flex flex-col items-center gap-3">
+            <button
+              onClick={onEnterConstellation}
+              className="px-7 py-3.5 rounded-2xl bg-ink text-vellum-100 font-sans text-sm font-semibold hover:bg-ink-light shadow-xl hover:shadow-2xl transition-all flex items-center gap-2 group"
+            >
+              <span>Enter the Constellation</span>
+              <span className="group-hover:translate-x-1.5 transition-transform font-mono">→</span>
+            </button>
+            <span className="text-[11px] font-mono text-ink-muted">
+              Scroll mouse wheel to zoom in · Or press Space to advance
+            </span>
+          </div>
+        </div>
+
+        {/* ============================================================== */}
+        {/* CONSTELLATION REVEAL CONTAINER (Fades in when zooming in)        */}
+        {/* ============================================================== */}
+        <div className={`transition-all duration-1000 ${isPrologueActive ? 'opacity-0 scale-90 pointer-events-none filter blur-[2px]' : 'opacity-100 scale-100 pointer-events-auto'}`}>
+          
+          {/* Volumetric Radiant Nebula Behind Active Hub */}
+          {currentActiveHub && !isPrologueActive && (
+            <div
+              className="absolute rounded-full pointer-events-none blur-3xl transition-all duration-1000 ease-out z-0"
+              style={{
+                left: `${currentActiveHub.x}px`,
+                top: `${currentActiveHub.y}px`,
+                transform: 'translate(-50%, -50%)',
+                width: '680px',
+                height: '680px',
+                background: `radial-gradient(circle, ${currentActiveHub.accentGlow} 0%, rgba(251,249,245,0) 70%)`
+              }}
+            />
+          )}
+
+          {/* Bookend Background Typography (Anthropic Signature) */}
           <div
-            className="absolute rounded-full pointer-events-none blur-3xl transition-all duration-1000 ease-out z-0"
-            style={{
-              left: `${currentActiveHub.x}px`,
-              top: `${currentActiveHub.y}px`,
-              transform: 'translate(-50%, -50%)',
-              width: '650px',
-              height: '650px',
-              background: `radial-gradient(circle, ${currentActiveHub.accentGlow} 0%, rgba(251,249,245,0) 70%)`
-            }}
-          />
-        )}
+            className="absolute font-editorial text-[180px] font-normal text-ink/10 select-none pointer-events-none tracking-tighter"
+            style={{ left: '-1380px', top: '-860px' }}
+          >
+            Keep
+          </div>
+          <div
+            className="absolute font-editorial text-[200px] font-normal text-ink/10 select-none pointer-events-none tracking-tighter"
+            style={{ left: '680px', top: '820px' }}
+          >
+            thinking.
+          </div>
 
-        {/* Colossal Bookend Editorial Typography (Anthropic "Keep thinking." Signature) */}
-        <div
-          className="absolute font-editorial text-[180px] font-normal text-ink/12 select-none pointer-events-none tracking-tighter"
-          style={{ left: '-1380px', top: '-860px' }}
-        >
-          Keep
-        </div>
-        <div
-          className="absolute font-editorial text-[200px] font-normal text-ink/12 select-none pointer-events-none tracking-tighter"
-          style={{ left: '680px', top: '820px' }}
-        >
-          thinking.
-        </div>
+          {/* SVG Connective Constellation Web */}
+          <svg
+            className="absolute overflow-visible pointer-events-none z-10"
+            style={{ left: 0, top: 0 }}
+          >
+            {/* Inter-hub structural web lines */}
+            <path d="M 0 -60 L -640 -420" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -60 L 640 -420" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -60 L -660 400" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -60 L 660 400" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -60 L 0 740" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
 
-        {/* SVG Dynamic Connective Constellation Web */}
-        <svg
-          className="absolute overflow-visible pointer-events-none z-10"
-          style={{ left: 0, top: 0 }}
-        >
-          {/* Subtle inter-hub cosmic chords */}
-          <path d="M 0 -60 L -640 -420" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-          <path d="M 0 -60 L 640 -420" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-          <path d="M 0 -60 L -660 400" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-          <path d="M 0 -60 L 660 400" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-          <path d="M 0 -60 L 0 740" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-          <path d="M -640 -420 L 640 -420" stroke="rgba(120, 113, 108, 0.12)" strokeWidth="1" strokeDasharray="2 6" fill="none" />
-          <path d="M -660 400 L 660 400" stroke="rgba(120, 113, 108, 0.12)" strokeWidth="1" strokeDasharray="2 6" fill="none" />
+            {/* Bezier Spoke Lines to Satellite Nodes */}
+            {data.nodes.map((node) => {
+              const hub = data.hubs.find((h) => h.id === node.hubId);
+              if (!hub) return null;
+              
+              const midX = (hub.x + node.x) / 2;
+              const midY = (hub.y + node.y) / 2 - 15;
 
-          {/* Organic Bezier Spoke Lines Radiating to Satellite Nodes */}
-          {data.nodes.map((node) => {
-            const hub = data.hubs.find((h) => h.id === node.hubId);
-            if (!hub) return null;
-            
-            const midX = (hub.x + node.x) / 2;
-            const midY = (hub.y + node.y) / 2 - 15;
+              const isCurrentStopNode = activeStop?.activeNodeIds?.includes(node.id);
 
-            const isCurrentStopNode = activeStop?.activeNodeIds?.includes(node.id);
+              return (
+                <g key={`path-${node.id}`}>
+                  <path
+                    d={`M ${hub.x} ${hub.y} Q ${midX} ${midY} ${node.x} ${node.y}`}
+                    stroke={isCurrentStopNode ? hub.color : 'rgba(120, 113, 108, 0.25)'}
+                    strokeWidth={isCurrentStopNode ? '2' : '1.2'}
+                    className={isCurrentStopNode ? 'pulse-line' : ''}
+                    fill="none"
+                  />
+                  <circle cx={node.x} cy={node.y} r="3" fill={hub.color} opacity={isCurrentStopNode ? 0.9 : 0.4} />
+                </g>
+              );
+            })}
+          </svg>
 
+          {/* Central & Thematic Question Hubs */}
+          {data.hubs.map((hub) => {
+            const isActiveHub = activeStop?.hubId === hub.id;
             return (
-              <g key={`path-${node.id}`}>
-                <path
-                  d={`M ${hub.x} ${hub.y} Q ${midX} ${midY} ${node.x} ${node.y}`}
-                  stroke={isCurrentStopNode ? hub.color : 'rgba(120, 113, 108, 0.25)'}
-                  strokeWidth={isCurrentStopNode ? '2' : '1.2'}
-                  className={isCurrentStopNode ? 'pulse-line' : ''}
-                  fill="none"
-                />
-                <circle cx={node.x} cy={node.y} r="3" fill={hub.color} opacity={isCurrentStopNode ? 0.9 : 0.4} />
-              </g>
+              <div
+                key={hub.id}
+                onClick={() => onHubClick(hub)}
+                style={{
+                  left: `${hub.x}px`,
+                  top: `${hub.y}px`,
+                  transform: 'translate(-50%, -50%)',
+                }}
+                className={`absolute cursor-pointer text-center select-none transition-all duration-700 z-15
+                  ${isActiveHub ? 'scale-105 opacity-100' : 'opacity-70 hover:opacity-100 hover:scale-102'}
+                `}
+              >
+                <div className="max-w-md px-4">
+                  <span className="text-[10px] uppercase font-mono tracking-widest font-semibold text-ink-muted">
+                    {hub.category}
+                  </span>
+
+                  <h3 className="font-editorial text-2xl sm:text-3xl font-medium text-ink tracking-tight mt-1 leading-snug hover:text-terracotta transition-colors">
+                    {hub.question}
+                  </h3>
+
+                  <p className="text-xs text-ink-muted mt-2 leading-relaxed font-sans max-w-sm mx-auto">
+                    {hub.thesis}
+                  </p>
+                </div>
+              </div>
             );
           })}
-        </svg>
 
-        {/* Central & Thematic Inquiries (Anthropic Question Aesthetic) */}
-        {data.hubs.map((hub) => {
-          const isActiveHub = activeStop?.hubId === hub.id;
-          return (
-            <div
-              key={hub.id}
-              onClick={() => onHubClick(hub)}
-              style={{
-                left: `${hub.x}px`,
-                top: `${hub.y}px`,
-                transform: 'translate(-50%, -50%)',
-              }}
-              className={`absolute cursor-pointer text-center select-none transition-all duration-700 z-15
-                ${isActiveHub ? 'scale-105 opacity-100' : 'opacity-70 hover:opacity-100 hover:scale-102'}
-              `}
-            >
-              <div className="max-w-md px-4">
-                {/* Category eyebrow */}
-                <span className="text-[10px] uppercase font-mono tracking-widest font-semibold text-ink-muted">
-                  {hub.category}
-                </span>
+          {/* Satellite Node Cards */}
+          {data.nodes.map((node) => {
+            const isHighlighted = activeStop?.activeNodeIds?.includes(node.id);
+            const isFaded = !isExploreMode && activeStop?.activeNodeIds?.length > 0 && !isHighlighted;
 
-                {/* Question Heading (Serif) */}
-                <h3 className="font-editorial text-2xl sm:text-3xl font-medium text-ink tracking-tight mt-1 leading-snug hover:text-terracotta transition-colors">
-                  {hub.question}
-                </h3>
-
-                {/* Contemplative subtext */}
-                <p className="text-xs text-ink-muted mt-2 leading-relaxed font-sans max-w-sm mx-auto">
-                  {hub.thesis}
-                </p>
+            return (
+              <div
+                key={node.id}
+                className={`transition-all duration-500 ${isFaded ? 'opacity-25 filter blur-[0.6px]' : 'opacity-100'}`}
+              >
+                <NodeCard
+                  node={node}
+                  isHighlighted={isHighlighted}
+                  onClick={onNodeClick}
+                />
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
-        {/* Satellite Node Cards (Curated Micro-Art Gallery) */}
-        {data.nodes.map((node) => {
-          const isHighlighted = activeStop?.activeNodeIds?.includes(node.id);
-          const isFaded = !isExploreMode && activeStop?.activeNodeIds?.length > 0 && !isHighlighted;
-
-          return (
-            <div
-              key={node.id}
-              className={`transition-all duration-500 ${isFaded ? 'opacity-25 filter blur-[0.6px]' : 'opacity-100'}`}
-            >
-              <NodeCard
-                node={node}
-                isHighlighted={isHighlighted}
-                onClick={onNodeClick}
-              />
-            </div>
-          );
-        })}
       </div>
     </div>
   );

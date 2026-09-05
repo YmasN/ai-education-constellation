@@ -185,7 +185,7 @@ export default function App() {
         onResetZoom={handleResetZoom}
       />
 
-      {/* Main Interactive Constellation Canvas */}
+      {/* Main Interactive Constellation Canvas with Prologue Reveal */}
       <ConstellationCanvas
         data={presentationData}
         camera={camera}
@@ -194,6 +194,10 @@ export default function App() {
         onNodeClick={(node) => setSelectedNode(node)}
         onManualPanZoom={(newCam) => setCamera(newCam)}
         onHubClick={handleHubClick}
+        onEnterConstellation={() => {
+          setCurrentStepIndex(1);
+          setIsExploreMode(false);
+        }}
       />
 
       {/* Keynote Navigation HUD (Visible in Guided Mode) */}
