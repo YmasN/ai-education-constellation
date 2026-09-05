@@ -20,9 +20,9 @@ export default function NodeCard({ node, isHighlighted, onClick }) {
         ${isHighlighted ? 'scale-110 z-30' : 'hover:scale-105 hover:z-30'}
       `}
     >
-      <div className="flex flex-col items-center w-48 text-center transition-all duration-300">
+      <div className="flex flex-col items-center w-52 text-center transition-all duration-300">
         {/* Artistic Thumbnail Frame (Anthropic Style) */}
-        <div className={`relative w-20 h-20 rounded-xl overflow-hidden shadow-md border-2 transition-all duration-500 bg-vellum-50
+        <div className={`relative w-26 h-26 w-[104px] h-[104px] rounded-2xl overflow-hidden shadow-md border-2 transition-all duration-500 bg-vellum-50
           ${isHighlighted 
             ? 'ring-4 ring-ink/20 border-ink shadow-2xl scale-105' 
             : 'border-vellum-400 group-hover:border-ink group-hover:shadow-xl'
@@ -41,10 +41,10 @@ export default function NodeCard({ node, isHighlighted, onClick }) {
 
         {/* Floating Label & Badge */}
         <div className="mt-2 flex flex-col items-center">
-          <span className="text-[9px] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full bg-vellum-200/90 text-ink-muted group-hover:bg-ink group-hover:text-vellum-100 transition-colors">
+          <span className="text-[10px] uppercase tracking-widest font-semibold px-2.5 py-0.5 rounded-full bg-vellum-200/90 text-ink-muted group-hover:bg-ink group-hover:text-vellum-100 transition-colors">
             {node.tag}
           </span>
-          <h4 className="font-editorial text-sm font-semibold text-ink leading-tight mt-1 group-hover:text-terracotta transition-colors line-clamp-1 max-w-full">
+          <h4 className="font-editorial text-sm font-semibold text-ink leading-tight mt-1.5 group-hover:text-terracotta transition-colors line-clamp-1 max-w-full">
             {node.title}
           </h4>
         </div>
