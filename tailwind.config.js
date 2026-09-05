@@ -8,22 +8,27 @@ export default {
     extend: {
       colors: {
         vellum: {
-          50: '#FDFCF9',
-          100: '#FBF9F5',
-          200: '#F4EFE6',
-          300: '#EDE4D4',
-          400: '#DFD2BC',
-          900: '#2A241C',
+          50: '#FFFFFF',
+          100: '#FAF9F6',
+          200: '#F3F2EE',
+          300: '#E7E5DF',
+          400: '#D5D2C9',
+          900: '#1F1E1D',
         },
         ink: {
           DEFAULT: '#1B1917',
           light: '#44403C',
           muted: '#78716C',
         },
+        crimson: {
+          DEFAULT: '#A51C30',
+          dark: '#801424',
+          light: '#FCECEF',
+        },
         terracotta: {
-          DEFAULT: '#C25E3E',
-          dark: '#A3482B',
-          light: '#F8ECE7',
+          DEFAULT: '#A51C30',
+          dark: '#801424',
+          light: '#FCECEF',
         },
         sage: {
           DEFAULT: '#4A6B53',
