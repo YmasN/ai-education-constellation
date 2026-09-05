@@ -21,8 +21,8 @@ export default function NodeCard({ node, isHighlighted, onClick }) {
       `}
     >
       <div className="flex flex-col items-center w-52 text-center transition-all duration-300">
-        {/* Artistic Thumbnail Frame (Anthropic Style) */}
-        <div className={`relative w-26 h-26 w-[104px] h-[104px] rounded-2xl overflow-hidden shadow-md border-2 transition-all duration-500 bg-vellum-50
+        {/* Artistic Thumbnail Frame */}
+        <div className={`relative w-[104px] h-[104px] rounded-2xl overflow-hidden shadow-md border-2 transition-all duration-500 bg-vellum-50
           ${isHighlighted 
             ? 'ring-4 ring-ink/20 border-ink shadow-2xl scale-105' 
             : 'border-vellum-400 group-hover:border-ink group-hover:shadow-xl'
