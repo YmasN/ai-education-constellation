@@ -81,17 +81,46 @@ export default function ConstellationCanvas({
     isDraggingRef.current = false;
   };
 
-  // Wheel to Zoom
-  const handleWheel = (e) => {
-    e.preventDefault();
-    const zoomFactor = e.deltaY > 0 ? 0.92 : 1.08;
-    const newZoom = Math.min(Math.max(camera.zoom * zoomFactor, 0.35), 2.5);
-    onManualPanZoom({
-      x: camera.x,
-      y: camera.y,
-      zoom: newZoom
-    });
-  };
+  // Cursor-anchored focal zoom via wheel
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onWheel = (e) => {
+      e.preventDefault();
+      const rect = container.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      // Mouse offset relative to viewport center
+      const screenX = e.clientX - centerX;
+      const screenY = e.clientY - centerY;
+
+      const currentZoom = camera.zoom;
+      // Smooth geometric zoom step
+      const zoomFactor = e.deltaY > 0 ? 0.90 : 1.11;
+      const newZoom = Math.min(Math.max(currentZoom * zoomFactor, 0.35), 3.0);
+
+      if (Math.abs(newZoom - currentZoom) < 0.0001) return;
+
+      // Calculate world coordinates currently directly under the mouse pointer
+      const worldX = camera.x + screenX / currentZoom;
+      const worldY = camera.y + screenY / currentZoom;
+
+      // Recalculate camera position so the world point remains stationary under cursor
+      const newCamX = worldX - screenX / newZoom;
+      const newCamY = worldY - screenY / newZoom;
+
+      onManualPanZoom({
+        x: newCamX,
+        y: newCamY,
+        zoom: newZoom
+      });
+    };
+
+    container.addEventListener('wheel', onWheel, { passive: false });
+    return () => container.removeEventListener('wheel', onWheel);
+  }, [camera.x, camera.y, camera.zoom, onManualPanZoom]);
 
   // Touch Support for mobile/tablets
   const touchStartRef = useRef({ x: 0, y: 0 });
@@ -124,7 +153,6 @@ export default function ConstellationCanvas({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      onWheel={handleWheel}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
