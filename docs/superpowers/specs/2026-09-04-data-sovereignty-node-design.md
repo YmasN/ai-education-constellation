@@ -1,47 +1,92 @@
-# Design Spec: Institutional Data Sovereignty Node & Custom Visual Vignette
+# Design Spec: Institutional Data Sovereignty Node, Custom Vignette & Compact Constellation Layout
 
 ## 1. Overview
-This design adds a dedicated satellite node to the **Ethics & Environment** constellation hub centered on **Localized and Custom AI Models for Maintaining Data Sovereignty and Data Protection**.
-
-The addition includes:
-1. **Node Data & Presentation Stop Integration**: Full case study, faculty action, quote, and coordinates in `src/data/presentationData.js`.
-2. **Custom SVG Visual Vignette**: A bespoke 100x100 micro-artwork in `src/components/VisualArtifacts.jsx` depicting a sovereign architectural shield/vault in Crimson Red and Off-White.
-3. **Keynote Beat 5 Integration**: Linking the node into the `stop-ethics` beat with updated speaker cues and highlight state.
+This design implements two coordinated improvements:
+1. **Institutional Data Sovereignty Node & Custom Artwork**: A new satellite node in the **Ethics & Environment** cluster highlighting campus-hosted private models, data protection, and research sovereignty, complete with a custom 100×100 Crimson Red SVG micro-artwork.
+2. **Compact Constellation Geometry**: Compressing the overall constellation geometry by ~22% further toward the center. This makes full-constellation navigation effortless, fits all clusters comfortably on laptops/displays, and produces tighter, cinematic swoops during presentation transitions.
 
 ---
 
 ## 2. Technical Specification
 
-### A. Node Definition in `src/data/presentationData.js`
-- **ID**: `node-data-sovereignty`
-- **Hub**: `hub-ethics`
-- **Position**: `x: 360, y: 170` (balances the upper-left quadrant of `hub-ethics` at `(520, 310)`)
-- **Tag**: `Sovereignty`
-- **Title**: `Institutional Data Sovereignty`
-- **Summary**: Deploying campus-governed, custom-tuned models in secure on-premise enclaves to ensure FERPA compliance, preserve student privacy, and protect university IP from commercial model scraping.
-- **Case Study**: Institutions deploying private sovereign compute clusters running open-weights models behind campus firewalls, ensuring zero telemetry or student data retention by commercial cloud vendors.
-- **Faculty Action**: Require institutional procurement to mandate zero-data-retention agreements, and provide campus-hosted API endpoints for classroom and laboratory workloads.
-- **Ethics/Ecology**: Data sovereignty is academic independence: universities must not trade student intellectual rights and proprietary research for commercial convenience.
-- **Key Quote**: "True academic freedom in an automated age requires owning the ground upon which your intelligence runs."
+### A. Compact Constellation Layout Coordinates
 
-### B. Keynote Stop 5 (`stop-ethics`) Update
-- Add `"node-data-sovereignty"` to `activeNodeIds`:
-  `["node-carbon-water", "node-slm-frugality", "node-bias-hallucination", "node-data-sovereignty"]`
-- Add cue to `speakerCues`:
-  `"Data Sovereignty: Campus-hosted private models defending FERPA compliance, student privacy, and uncompromised research IP."`
+#### 1. Central & Regional Hubs:
+- `hub-grounding`: `{ x: 0, y: -40 }`
+- `hub-teaching`: `{ x: -390, y: -260 }`
+- `hub-learning`: `{ x: 390, y: -260 }`
+- `hub-science`: `{ x: -400, y: 250 }`
+- `hub-ethics`: `{ x: 400, y: 250 }`
+- `hub-living`: `{ x: 0, y: 460 }`
 
-### C. SVG Micro-Artwork in `src/components/VisualArtifacts.jsx`
-- Add `case 'node-data-sovereignty':`
-- Visual Theme: Sovereign Cryptographic Citadel & Shield
-  - Background: Deep Obsidian / Charcoal (`#181518`)
-  - Shield / Citadel Arch: Crimson Red (`#A51C30`) with off-white and amber accents (`#FAF9F6`, `#D4AF37`)
-  - Core: Concentric geometric vault rings and keyhole nexus symbol
-  - Defensive perimeter lines with dashed integrity matrix
+#### 2. Satellite Nodes:
+- **Teaching Hub** (`-390, -260`):
+  - `node-detection-trap`: `{ x: -550, y: -360 }`
+  - `node-authentic-assessment`: `{ x: -260, y: -380 }`
+  - `node-reclaim-time`: `{ x: -500, y: -160 }`
+- **Learning Hub** (`390, -260`):
+  - `node-socratic-mentor`: `{ x: 260, y: -380 }`
+  - `node-neurodiversity`: `{ x: 550, y: -360 }`
+  - `node-first-gen`: `{ x: 500, y: -160 }`
+- **Science & Discovery Hub** (`-400, 250`):
+  - `node-alphafold`: `{ x: -560, y: 130 }`
+  - `node-robotic-pipetting`: `{ x: -560, y: 360 }`
+  - `node-materials-battery`: `{ x: -270, y: 340 }`
+- **Ethics, Governance & Ecology Hub** (`400, 250`):
+  - `node-data-sovereignty`: `{ x: 270, y: 130 }` (NEW)
+  - `node-carbon-water`: `{ x: 560, y: 130 }`
+  - `node-slm-frugality`: `{ x: 560, y: 360 }`
+  - `node-bias-hallucination`: `{ x: 270, y: 340 }`
+- **Everyday Living Hub** (`0, 460`):
+  - `node-mental-bandwidth`: `{ x: -220, y: 540 }`
+  - `node-lifelong-curiosity`: `{ x: 220, y: 540 }`
+
+#### 3. Keynote Camera Targets:
+- `stop-prologue`: `{ x: 0, y: 0, zoom: 0.45 }`
+- `stop-grounding`: `{ x: 0, y: -40, zoom: 1.25 }`
+- `stop-teaching`: `{ x: -390, y: -260, zoom: 1.15 }`
+- `stop-learning`: `{ x: 390, y: -260, zoom: 1.15 }`
+- `stop-science`: `{ x: -400, y: 250, zoom: 1.15 }`
+- `stop-ethics`: `{ x: 400, y: 250, zoom: 1.15 }`
+- `stop-living`: `{ x: 0, y: 460, zoom: 1.20 }`
+- `stop-synthesis`: `{ x: 0, y: 0, zoom: 0.45 }`
+
+#### 4. SVG Web Lines in `src/components/ConstellationCanvas.jsx`:
+Update inter-hub structural lines connecting `(0, -40)` to:
+- `(-390, -260)`
+- `(390, -260)`
+- `(-400, 250)`
+- `(400, 250)`
+- `(0, 460)`
 
 ---
 
-## 3. Verification & Acceptance Criteria
-1. `npm run build` succeeds without errors.
-2. The node appears in the constellation at `(360, 170)` under the Ethics hub with bezier connective line.
-3. Clicking the node opens the `NodeDetailDrawer` with all rich content, case study, quote, and action items.
-4. During keynote beat 5 (`05 / 07 • Ethics & Environment`), the node card pulses and highlights alongside the other 3 ethics nodes.
+### B. New Node: Institutional Data Sovereignty
+
+#### 1. Content in `src/data/presentationData.js`:
+- **id**: `"node-data-sovereignty"`
+- **hubId**: `"hub-ethics"`
+- **title**: `"Institutional Data Sovereignty"`
+- **tag**: `"Sovereignty"`
+- **x**: `270`, **y**: `130`
+- **summary**: Deploying campus-governed, custom-tuned models in secure on-premise enclaves to ensure FERPA compliance, preserve student privacy, and protect university IP from commercial model scraping.
+- **caseStudy**: Institutions deploying private sovereign compute clusters running open-weights models behind campus firewalls, ensuring zero telemetry or student data retention by commercial cloud vendors.
+- **facultyAction**: Require institutional procurement to mandate zero-data-retention agreements, and provide campus-hosted API endpoints for classroom and laboratory workloads.
+- **ethicsOrEco**: Data sovereignty is academic independence: universities must not trade student intellectual rights and proprietary research for commercial convenience.
+- **keyQuote**: "True academic freedom in an automated age requires owning the ground upon which your intelligence runs."
+
+#### 2. Stop 5 Keynote Integration:
+- In `stop-ethics`:
+  - `activeNodeIds`: `["node-data-sovereignty", "node-carbon-water", "node-slm-frugality", "node-bias-hallucination"]`
+  - `speakerCues`: Add cue for data sovereignty and campus-owned AI enclaves.
+
+#### 3. Custom SVG Artwork in `src/components/VisualArtifacts.jsx`:
+- `case 'node-data-sovereignty':`
+- A sovereign cryptographic citadel/shield with concentric vault rings, protective bastion battlements, and integrity matrix lines in Crimson Red (`#A51C30`), Gold (`#D4AF37`), and Off-White (`#FAF9F6`).
+
+---
+
+## 3. Verification
+1. `npm run build` passes with zero errors.
+2. Constellation clusters are visibly more compact and fit comfortably in view.
+3. Node `node-data-sovereignty` renders smoothly with custom artwork, opens the case study drawer upon click, and lights up during Beat 5.
