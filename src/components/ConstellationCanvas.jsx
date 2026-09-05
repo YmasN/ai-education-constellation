@@ -10,7 +10,9 @@ export default function ConstellationCanvas({
   onNodeClick,
   onManualPanZoom,
   onHubClick,
-  onEnterConstellation
+  onEnterConstellation = () => {},
+  onRestartKeynote,
+  onExploreMode = () => {}
 }) {
   const containerRef = useRef(null);
   
@@ -29,10 +31,11 @@ export default function ConstellationCanvas({
   const animFrameRef = useRef(null);
   const prevCameraRef = useRef(camera);
 
-  // Determine if prologue mode is active
-  const isPrologueActive = activeStop?.isPrologue || 
-    (!isExploreMode && activeStop?.stepNumber === 0) || 
-    (isExploreMode && camState.zoom < 0.52 && Math.hypot(camState.x, camState.y) < 180);
+  // Determine if prologue mode is active (prologue step 0, keynote end stop 7, or zoomed out to center)
+  const isPrologueActive = (!isExploreMode && activeStop?.isPrologue) || 
+    (!isExploreMode && (activeStop?.stepNumber === 0 || activeStop?.stepNumber === data.keynoteStops.length - 1)) || 
+    (camState.zoom < 0.52 && Math.hypot(camState.x, camState.y) < 220);
+  const isAtEnd = activeStop?.stepNumber === data.keynoteStops.length - 1 && activeStop?.stepNumber !== 0;
 
   // Play cinematic swoop when camera changes significantly in Keynote mode
   useEffect(() => {
@@ -236,15 +239,36 @@ export default function ConstellationCanvas({
           </p>
 
           <div className="mt-10 flex flex-col items-center gap-3">
-            <button
-              onClick={onEnterConstellation}
-              className="px-7 py-3.5 rounded-2xl bg-ink text-vellum-100 font-sans text-sm font-semibold hover:bg-ink-light shadow-xl hover:shadow-2xl transition-all flex items-center gap-2 group"
-            >
-              <span>Enter the Constellation</span>
-              <span className="group-hover:translate-x-1.5 transition-transform font-mono">→</span>
-            </button>
+            {isAtEnd ? (
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <button
+                  onClick={onRestartKeynote || onEnterConstellation}
+                  className="px-7 py-3.5 rounded-2xl bg-ink text-vellum-100 font-sans text-sm font-semibold hover:bg-ink-light shadow-xl hover:shadow-2xl transition-all flex items-center gap-2 group"
+                >
+                  <span>Restart Keynote</span>
+                  <span className="group-hover:rotate-180 transition-transform font-mono">↺</span>
+                </button>
+                <button
+                  onClick={onExploreMode}
+                  className="px-7 py-3.5 rounded-2xl bg-vellum-200 border border-vellum-400/70 text-ink font-sans text-sm font-semibold hover:bg-vellum-300 shadow-md hover:shadow-lg transition-all flex items-center gap-2 group"
+                >
+                  <span>Explore Constellation</span>
+                  <span className="group-hover:scale-110 transition-transform">🧭</span>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={onEnterConstellation}
+                className="px-7 py-3.5 rounded-2xl bg-ink text-vellum-100 font-sans text-sm font-semibold hover:bg-ink-light shadow-xl hover:shadow-2xl transition-all flex items-center gap-2 group"
+              >
+                <span>Enter the Constellation</span>
+                <span className="group-hover:translate-x-1.5 transition-transform font-mono">→</span>
+              </button>
+            )}
             <span className="text-[11px] font-mono text-ink-muted">
-              Scroll mouse wheel to zoom in · Or press Space to advance
+              {isAtEnd
+                ? 'Keynote complete · Choose an option or scroll to explore freely'
+                : 'Scroll mouse wheel to zoom in · Or press Space to advance'}
             </span>
           </div>
         </div>
@@ -269,31 +293,17 @@ export default function ConstellationCanvas({
             />
           )}
 
-          {/* Bookend Background Typography (Anthropic Signature) */}
-          <div
-            className="absolute font-editorial text-[180px] font-normal text-ink/10 select-none pointer-events-none tracking-tighter"
-            style={{ left: '-1380px', top: '-860px' }}
-          >
-            Keep
-          </div>
-          <div
-            className="absolute font-editorial text-[200px] font-normal text-ink/10 select-none pointer-events-none tracking-tighter"
-            style={{ left: '680px', top: '820px' }}
-          >
-            thinking.
-          </div>
-
           {/* SVG Connective Constellation Web */}
           <svg
             className="absolute overflow-visible pointer-events-none z-10"
             style={{ left: 0, top: 0 }}
           >
             {/* Inter-hub structural web lines */}
-            <path d="M 0 -60 L -640 -420" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -60 L 640 -420" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -60 L -660 400" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -60 L 660 400" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
-            <path d="M 0 -60 L 0 740" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -50 L -500 -330" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -50 L 500 -330" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -50 L -520 310" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -50 L 520 310" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
+            <path d="M 0 -50 L 0 580" stroke="rgba(120, 113, 108, 0.20)" strokeWidth="1" strokeDasharray="3 5" fill="none" />
 
             {/* Bezier Spoke Lines to Satellite Nodes */}
             {data.nodes.map((node) => {
