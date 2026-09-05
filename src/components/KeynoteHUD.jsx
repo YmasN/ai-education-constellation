@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight, Clock, BookOpen, Maximize, Film } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock, BookOpen, Maximize, Film, LayoutGrid } from 'lucide-react';
 
 export default function KeynoteHUD({
   activeStop,
@@ -13,7 +13,8 @@ export default function KeynoteHUD({
   onNext,
   onToggleNotes,
   onToggleFullscreen,
-  onToggleCinema
+  onToggleCinema,
+  onOpenOverview
 }) {
   const formatTime = (totalSec) => {
     const mins = Math.floor(totalSec / 60);
@@ -29,9 +30,13 @@ export default function KeynoteHUD({
         
         {/* Step Indicator & Title */}
         <div className="flex items-center gap-3.5 min-w-0">
-          <div className="h-10 w-10 rounded-xl bg-ink text-vellum-100 flex items-center justify-center font-editorial font-bold text-lg shrink-0 shadow-sm">
+          <button
+            onClick={onOpenOverview}
+            className="h-10 w-10 rounded-xl bg-ink text-vellum-100 flex items-center justify-center font-editorial font-bold text-lg shrink-0 shadow-sm hover:bg-ink-light transition-colors"
+            title="Open Sequence Navigator (O)"
+          >
             {currentIndex + 1}
-          </div>
+          </button>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <span className="text-[11px] uppercase tracking-wider font-semibold text-terracotta">
@@ -72,6 +77,15 @@ export default function KeynoteHUD({
           >
             <Clock className="w-3.5 h-3.5 text-terracotta" />
             <span>{formatTime(elapsedSeconds)}</span>
+          </button>
+
+          {/* Navigator Button */}
+          <button
+            onClick={onOpenOverview}
+            className="p-2 rounded-lg text-ink bg-vellum-200/80 hover:bg-vellum-300 transition-colors"
+            title="Open Sequence Navigator (O)"
+          >
+            <LayoutGrid className="w-4 h-4" />
           </button>
 
           {/* Notes Toggle Button */}
@@ -128,7 +142,7 @@ export default function KeynoteHUD({
       {!isCinemaMode && (
         <div className="mt-2 text-center">
           <span className="text-[11px] text-ink-muted/80 bg-vellum-100/70 backdrop-blur-sm px-3 py-1 rounded-full border border-vellum-300/40 font-mono">
-            <kbd className="font-semibold">Space</kbd> / <kbd className="font-semibold">→</kbd> Next · <kbd className="font-semibold">←</kbd> Prev · <kbd className="font-semibold">T</kbd> Notes · <kbd className="font-semibold">C</kbd> Cinema · <kbd className="font-semibold">M</kbd> Free Explore
+            <kbd className="font-semibold">Space</kbd> / <kbd className="font-semibold">→</kbd> Next · <kbd className="font-semibold">←</kbd> Prev · <kbd className="font-semibold">O</kbd> Navigator · <kbd className="font-semibold">T</kbd> Notes · <kbd className="font-semibold">C</kbd> Cinema
           </span>
         </div>
       )}

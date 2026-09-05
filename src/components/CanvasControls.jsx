@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Minus, RotateCcw, Compass, Presentation, Volume2, VolumeX, Info, Film } from 'lucide-react';
+import { Plus, Minus, RotateCcw, Compass, Presentation, Volume2, VolumeX, Info, Film, LayoutGrid } from 'lucide-react';
 import { soundEngine } from '../utils/soundEngine';
 
 export default function CanvasControls({
@@ -7,6 +7,7 @@ export default function CanvasControls({
   isCinemaMode,
   onToggleMode,
   onToggleCinema,
+  onOpenOverview,
   onZoomIn,
   onZoomOut,
   onResetZoom
@@ -40,6 +41,16 @@ export default function CanvasControls({
         {/* Center/Right Control Cluster */}
         <div className="flex items-center gap-2 pointer-events-auto">
           
+          {/* Constellation Navigator (Jump to any beat) */}
+          <button
+            onClick={onOpenOverview}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl glass-panel text-xs text-ink transition-all border border-vellum-400/80 shadow-md hover:bg-vellum-200/90"
+            title="Jump to Any Beat / Q&A Navigator (O)"
+          >
+            <LayoutGrid className="w-3.5 h-3.5 text-ink-muted" />
+            <span className="hidden md:inline">Navigator</span>
+          </button>
+
           {/* Ambient Soundscape Toggle */}
           <button
             onClick={handleToggleAudio}

@@ -5,10 +5,12 @@ import KeynoteHUD from './components/KeynoteHUD';
 import PresenterNotes from './components/PresenterNotes';
 import NodeDetailDrawer from './components/NodeDetailDrawer';
 import CanvasControls from './components/CanvasControls';
+import OverviewMenu from './components/OverviewMenu';
 
 export default function App() {
   const [isExploreMode, setIsExploreMode] = useState(false);
   const [isCinemaMode, setIsCinemaMode] = useState(false);
+  const [showOverview, setShowOverview] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [selectedNode, setSelectedNode] = useState(null);
   const [showPresenterNotes, setShowPresenterNotes] = useState(false);
@@ -138,6 +140,10 @@ export default function App() {
           e.preventDefault();
           setShowPresenterNotes((prev) => !prev);
           break;
+        case 'KeyO':
+          e.preventDefault();
+          setShowOverview((prev) => !prev);
+          break;
         case 'KeyC':
           e.preventDefault();
           handleToggleCinema();
@@ -153,6 +159,7 @@ export default function App() {
         case 'Escape':
           setSelectedNode(null);
           setShowPresenterNotes(false);
+          setShowOverview(false);
           break;
         default:
           break;
@@ -172,6 +179,7 @@ export default function App() {
         isCinemaMode={isCinemaMode}
         onToggleMode={handleToggleMode}
         onToggleCinema={handleToggleCinema}
+        onOpenOverview={() => setShowOverview(true)}
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onResetZoom={handleResetZoom}
@@ -203,6 +211,7 @@ export default function App() {
           onToggleNotes={() => setShowPresenterNotes((prev) => !prev)}
           onToggleFullscreen={handleToggleFullscreen}
           onToggleCinema={handleToggleCinema}
+          onOpenOverview={() => setShowOverview(true)}
         />
       )}
 
@@ -216,6 +225,19 @@ export default function App() {
           onToggleTimer={() => setIsTimerRunning((prev) => !prev)}
           onResetTimer={() => setElapsedSeconds(0)}
           onClose={() => setShowPresenterNotes(false)}
+        />
+      )}
+
+      {/* Constellation Navigator / Q&A Jump Menu (Hotkey: 'O') */}
+      {showOverview && (
+        <OverviewMenu
+          stops={presentationData.keynoteStops}
+          currentStepIndex={currentStepIndex}
+          onSelectStep={(idx) => {
+            setCurrentStepIndex(idx);
+            setIsExploreMode(false);
+          }}
+          onClose={() => setShowOverview(false)}
         />
       )}
 
